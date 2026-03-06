@@ -35,7 +35,7 @@ Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
 ### Kanjis
 
 ---
-#### <font size="6">人</font>
+#### 人
 
 *pessoa*
 
@@ -46,7 +46,7 @@ Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
 > Chinesa (*on’yomi*): にん, じん
 ---
 
-#### <font size="6">入</font>
+#### 入
 
 *entrar*
 
@@ -58,7 +58,7 @@ Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
 
 ---
 
-#### <font size="6">学</font>
+#### 学
 
 *estudar*
 
@@ -69,7 +69,7 @@ Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
 > Chinesa (*on’yomi*):
 ---
 
-#### <font size="6">生</font>
+#### 生
 
 *vida*
 
@@ -80,7 +80,7 @@ Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
 > Chinesa (*on’yomi*):
 ---
 
-#### <font size="6">校</font>
+#### 校
 
 *escola*
 
@@ -91,7 +91,7 @@ Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
 > Chinesa (*on’yomi*):
 ---
 
-#### <font size="6">欲</font>
+#### 欲
 
 *querer*
 
@@ -102,7 +102,7 @@ Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
 > Chinesa (*on’yomi*):
 ---
 
-#### <font size="6">悪</font>
+#### 悪
 
 *mau*
 
@@ -113,7 +113,7 @@ Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
 > Chinesa (*on’yomi*): あく
 ---
 
-#### <font size="6">魂</font>
+#### 魂
 
 *alma*
 
@@ -124,7 +124,7 @@ Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
 > Chinesa (*on’yomi*):
 ---
 
-#### <font size="6">口</font>
+#### 口
 
 *boca*
 
@@ -135,7 +135,7 @@ Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
 > Chinesa (*on’yomi*):
 ---
 
-#### <font size="6">間</font>
+#### 間
 
 *período*
 
