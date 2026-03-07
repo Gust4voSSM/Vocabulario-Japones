@@ -1,0 +1,13 @@
+﻿{
+  "name": "sitejapones",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup:py": "node scripts/setup-python.mjs",
+    "build:docs": "node scripts/build-docs.mjs",
+    "watch:docs": "node scripts/watch-docs.mjs"
+  },
+  "devDependencies": {
+    "handlebars": "^4.7.8"
+  }
+}

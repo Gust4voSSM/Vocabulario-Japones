@@ -1,0 +1,65 @@
+﻿{
+  "vocabSource": [
+    {
+      "japanese": "人(ひと)",
+      "portuguese": "pessoa"
+    },
+    {
+      "japanese": "入(いり)口(くち)",
+      "romaji": "iriguchi",
+      "portuguese": "entrada"
+    },
+    {
+      "japanese": "欲(ほ)しい",
+      "kana": "ほしい",
+      "portuguese": "quero"
+    },
+    {
+      "japanese": "悪(あく)",
+      "portuguese": "mau"
+    }
+  ],
+  "glossaries": {
+    "cap1-core": ["人(ひと)", "入(いり)口(くち)", "欲(ほ)しい"],
+    "cap1-extra": ["悪(あく)"]
+  },
+  "kanjiCatalog": {
+    "人": {
+      "significado": "pessoa",
+      "kunyomi": ["ひと"],
+      "onyomi": ["にん", "じん"]
+    },
+    "入": {
+      "significado": "entrar",
+      "kunyomi": ["はい", "い"]
+    },
+    "学": {
+      "significado": "estudar"
+    },
+    "生": {
+      "significado": "vida"
+    },
+    "校": {
+      "significado": "escola"
+    },
+    "欲": {
+      "significado": "querer"
+    },
+    "悪": {
+      "significado": "mau",
+      "onyomi": ["あく"]
+    },
+    "魂": {
+      "significado": "alma"
+    },
+    "口": {
+      "significado": "boca"
+    },
+    "間": {
+      "significado": "período"
+    }
+  },
+  "kanjiSets": {
+    "cap1-main": ["人", "入", "学", "生", "校", "欲", "悪", "魂", "口", "間"]
+  }
+}

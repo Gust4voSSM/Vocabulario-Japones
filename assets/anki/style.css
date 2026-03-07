@@ -1,0 +1,19 @@
+﻿.card {
+  font-family: sans-serif;
+  font-size: 28px;
+  text-align: center;
+}
+
+ruby rt {
+  font-size: 0.5em;
+}
+
+.muted {
+  margin-top: 0.35em;
+  font-size: 0.7em;
+  opacity: 0.65;
+}
+
+.meaning {
+  font-size: 0.9em;
+}

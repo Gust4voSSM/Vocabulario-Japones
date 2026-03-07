@@ -101,6 +101,70 @@
       line-height: 1;
     }
 
+    .markdown-section .anki-embed {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 1rem auto 1.25rem;
+      background: #fff;
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    .markdown-section .anki-card {
+      min-height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .markdown-section .anki-embed .card {
+      font-family: sans-serif;
+      font-size: 28px;
+      text-align: center;
+      padding: 0.45em;
+      line-height: 1.3;
+    }
+
+    .markdown-section .anki-embed ruby rt {
+      font-size: 0.5em;
+    }
+
+    .markdown-section .anki-embed #answer {
+      margin: 0.3em auto 0.4em;
+    }
+
+    .markdown-section .anki-embed .muted {
+      margin-top: 0.35em;
+      font-size: 0.7em;
+      opacity: 0.65;
+    }
+
+    .markdown-section .anki-embed .meaning {
+      font-size: 0.9em;
+    }
+
+    .markdown-section .anki-controls {
+      margin-top: 0.85rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .markdown-section .anki-controls button,
+    .markdown-section .anki-controls .deck-download {
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #1e293b;
+      border-radius: 8px;
+      padding: 0.35rem 0.65rem;
+      font-size: 0.9rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
     @media (max-width: 900px) {
       .markdown-section {
         max-width: calc(100vw - 2rem);
@@ -130,9 +194,139 @@
     window.$docsify = {
       name: 'Japonês Vocab',
       repo: '',
+      executeScript: true,
+      plugins: [
+        function (hook) {
+          hook.doneEach(function () {
+            if (window.initAnkiEmbeds) {
+              window.initAnkiEmbeds();
+            }
+          });
+        }
+      ]
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script>
+    window.initAnkiEmbeds = function () {
+      document.querySelectorAll('.anki-embed[data-cards-b64]').forEach(function (root) {
+        if (root.dataset.initialized === '1') {
+          return;
+        }
+        root.dataset.initialized = '1';
+
+        var cardEl = root.querySelector('.anki-card');
+        var raw = root.getAttribute('data-cards-b64') || '';
+        var cards = [];
+        try {
+          var bin = atob(raw);
+          var bytes = Uint8Array.from(bin, function (char) {
+            return char.charCodeAt(0);
+          });
+          var decoded = new TextDecoder('utf-8').decode(bytes);
+          cards = JSON.parse(decoded);
+        } catch (error) {
+          cardEl.innerHTML = '<em>Erro ao carregar cards</em>';
+          return;
+        }
+
+        var index = 0;
+        var isFront = true;
+
+        function frontHtml(card) {
+          return '<div class="card"><div class="furigana-output">' + card.furigana + '</div></div>';
+        }
+
+        function backHtml(card) {
+          return '<div class="card"><div class="furigana-output">' + card.furigana + '</div><hr id="answer"><div class="muted">' + card.romaji + '</div><div class="meaning">' + card.meaning + '</div></div>';
+        }
+
+        function lockCardHeight() {
+          if (!cards.length) {
+            return;
+          }
+
+          var probe = document.createElement('div');
+          probe.style.position = 'absolute';
+          probe.style.visibility = 'hidden';
+          probe.style.pointerEvents = 'none';
+          probe.style.left = '-9999px';
+          probe.style.top = '0';
+
+          var width = cardEl.getBoundingClientRect().width || root.getBoundingClientRect().width;
+          if (width) {
+            probe.style.width = width + 'px';
+          }
+
+          root.appendChild(probe);
+          var maxHeight = 0;
+
+          cards.forEach(function (card) {
+            probe.innerHTML = frontHtml(card);
+            maxHeight = Math.max(maxHeight, probe.offsetHeight);
+
+            probe.innerHTML = backHtml(card);
+            maxHeight = Math.max(maxHeight, probe.offsetHeight);
+          });
+
+          root.removeChild(probe);
+          if (maxHeight > 0) {
+            cardEl.style.minHeight = Math.ceil(maxHeight) + 'px';
+          }
+        }
+
+        function render() {
+          var card = cards[index];
+          if (!card) {
+            cardEl.innerHTML = '<em>Sem cards</em>';
+            return;
+          }
+          cardEl.innerHTML = isFront ? frontHtml(card) : backHtml(card);
+        }
+
+        function next() {
+          index = (index + 1) % cards.length;
+          isFront = true;
+          render();
+        }
+
+        function prev() {
+          index = (index - 1 + cards.length) % cards.length;
+          isFront = true;
+          render();
+        }
+
+        function flip() {
+          isFront = !isFront;
+          render();
+        }
+
+        function shuffle() {
+          for (var i = cards.length - 1; i > 0; i -= 1) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = cards[i];
+            cards[i] = cards[j];
+            cards[j] = tmp;
+          }
+          index = 0;
+          isFront = true;
+          render();
+        }
+
+        root.querySelector('[data-action="next"]').addEventListener('click', next);
+        root.querySelector('[data-action="prev"]').addEventListener('click', prev);
+        root.querySelector('[data-action="flip"]').addEventListener('click', flip);
+        root.querySelector('[data-action="shuffle"]').addEventListener('click', shuffle);
+
+        lockCardHeight();
+        window.addEventListener('resize', function () {
+          lockCardHeight();
+          render();
+        });
+        render();
+      });
+    };
+  </script>
 </body>
 
 </html>

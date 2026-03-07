@@ -1,11 +1,13 @@
+<!-- Arquivo gerado automaticamente por `npm run build:docs`. -->
+
 # Vocabulário de Japonês
-Esse repositório tem o objetivo de compilar vocabulário útil para leitura de diferentes séries de mangá
+Esse repositório compila vocabulário útil para leitura de mangá.
 
 ---
 
 # Mairimashita! Iruma-kun
 
-Mairimashita! Iruma-kun é um mangá escrito por Osamu Nishi e publicado pela Shounen Champion Comics. Nesta sessão, vamos ver vocabulário relevante para este mangá
+Mairimashita! Iruma-kun é um mangá escrito por Osamu Nishi e publicado pela Shounen Champion Comics.
 
 ![Iruma-kun](https://upload.wikimedia.org/wikipedia/en/9/99/Mairimashita%21_Iruma-kun_volume_1_cover.jpg)
 
@@ -13,24 +15,26 @@ Mairimashita! Iruma-kun é um mangá escrito por Osamu Nishi e publicado pela Sh
 
 ## Capítulo 1
 
-### Glossário
-
-Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
+### Glossário principal
 
 | Japonês | Romaji | Português |
 | :--- | :--- | :--- |
-| <ruby>人<rt>ひと</rt></ruby> | *hito* | pessoa
-| <ruby>入<rt>いり</rt>口<rt>くち</rt></ruby> | *iriguchi* | entrada
-| <ruby>欲<rt>ほ</rt>しい</ruby> | *hoshii* | quero
-| <ruby>...</ruby> | *...* | ...
-<!-- | <ruby></ruby> | ** | 
-| <ruby></ruby> | ** |
-| <ruby></ruby> | ** |
-| <ruby></ruby> | ** |
-| <ruby></ruby> | ** |
-| <ruby></ruby> | ** | -->
+| <ruby>人<rt>ひと</rt></ruby> | *hito* | pessoa |
+| <ruby>入(いり)口<rt>くち</rt></ruby> | *iriguchi* | entrada |
+| <ruby>欲<rt>ほ</rt></ruby>しい | *hoshii* | quero |
 
-*(TODO)*
+### Treino (core + extra)
+
+<div class="anki-embed" id="embed-cap1-core-cap1-extra" data-cards-b64="W3siZnVyaWdhbmEiOiI8cnVieT7kuro8cnQ+44Gy44GoPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoiaGl0byIsIm1lYW5pbmciOiJwZXNzb2EiLCJqYXBvbmVzIjoi5Lq6KOOBsuOBqCkiLCJyb21hamlSYXciOiIiLCJwb3J0dWd1ZXMiOiJwZXNzb2EifSx7ImZ1cmlnYW5hIjoiPHJ1Ynk+5YWlKOOBhOOCiinlj6M8cnQ+44GP44GhPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoiaXJpZ3VjaGkiLCJtZWFuaW5nIjoiZW50cmFkYSIsImphcG9uZXMiOiLlhaUo44GE44KKKeWPoyjjgY/jgaEpIiwicm9tYWppUmF3IjoiaXJpZ3VjaGkiLCJwb3J0dWd1ZXMiOiJlbnRyYWRhIn0seyJmdXJpZ2FuYSI6IjxydWJ5PuassjxydD7jgbs8L3J0PjwvcnVieT7jgZfjgYQiLCJyb21hamkiOiJob3NoaWkiLCJtZWFuaW5nIjoicXVlcm8iLCJqYXBvbmVzIjoi5qyyKOOBuynjgZfjgYQiLCJyb21hamlSYXciOiIiLCJwb3J0dWd1ZXMiOiJxdWVybyJ9LHsiZnVyaWdhbmEiOiI8cnVieT7mgqo8cnQ+44GC44GPPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoiYWt1IiwibWVhbmluZyI6Im1hdSIsImphcG9uZXMiOiLmgqoo44GC44GPKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6Im1hdSJ9XQ==">
+  <div class="anki-card" data-face="front"></div>
+  <div class="anki-controls">
+    <button type="button" data-action="prev">Anterior</button>
+    <button type="button" data-action="flip">Virar</button>
+    <button type="button" data-action="next">Próxima</button>
+    <button type="button" data-action="shuffle">Embaralhar</button>
+    <a href="decks/cap1-core-cap1-extra.apkg" class="deck-download" download>Baixar deck</a>
+  </div>
+</div>
 
 ### Kanjis
 
@@ -42,10 +46,9 @@ Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
 > Leituras relevantes para o capítulo
 >
 > Japonesa (*kun’yomi*): ひと
-> 
+>
 > Chinesa (*on’yomi*): にん, じん
 ---
-
 #### <span class="kanji-title">入</span>
 
 *entrar*
@@ -53,97 +56,50 @@ Esse glossário vai ajudar com os blocos básicos para entender o capítulo 1
 > Leituras relevantes para o capítulo
 >
 > Japonesa (*kun’yomi*): はい, い
-> 
-> Chinesa (*on’yomi*): ー
-
 ---
-
 #### <span class="kanji-title">学</span>
 
 *estudar*
 
-> Leituras relevantes para o capítulo
->
-> Japonesa (*kun’yomi*):
-> 
-> Chinesa (*on’yomi*):
 ---
-
 #### <span class="kanji-title">生</span>
 
 *vida*
 
-> Leituras relevantes para o capítulo
->
-> Japonesa (*kun’yomi*):
-> 
-> Chinesa (*on’yomi*):
 ---
-
 #### <span class="kanji-title">校</span>
 
 *escola*
 
-> Leituras relevantes para o capítulo
->
-> Japonesa (*kun’yomi*):
-> 
-> Chinesa (*on’yomi*):
 ---
-
 #### <span class="kanji-title">欲</span>
 
 *querer*
 
-> Leituras relevantes para o capítulo
->
-> Japonesa (*kun’yomi*):
-> 
-> Chinesa (*on’yomi*):
 ---
-
 #### <span class="kanji-title">悪</span>
 
 *mau*
 
 > Leituras relevantes para o capítulo
 >
-> Japonesa (*kun’yomi*): ー
-> 
 > Chinesa (*on’yomi*): あく
 ---
-
 #### <span class="kanji-title">魂</span>
 
 *alma*
 
-> Leituras relevantes para o capítulo
->
-> Japonesa (*kun’yomi*):
-> 
-> Chinesa (*on’yomi*):
 ---
-
 #### <span class="kanji-title">口</span>
 
 *boca*
 
-> Leituras relevantes para o capítulo
->
-> Japonesa (*kun’yomi*):
-> 
-> Chinesa (*on’yomi*):
 ---
-
 #### <span class="kanji-title">間</span>
 
 *período*
 
-> Leituras relevantes para o capítulo
->
-> Japonesa (*kun’yomi*):
-> 
-> Chinesa (*on’yomi*):
+
 ---
 
 *fonte: Wanikani*

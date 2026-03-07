@@ -1,0 +1,19 @@
+﻿<div id="src" style="display:none;">{{Japones}}</div>
+<div id="romaji-src" style="display:none;">{{Romaji}}</div>
+
+<div id="furigana-output"></div>
+
+<script>
+(() => {
+  const raw = document.getElementById("src").textContent.trim();
+  function toFurigana(text) {
+    const whole = text.match(/^(.+?)[（(]([^）)]+)[）)]$/u);
+    if (whole) {
+      return `<ruby>${whole[1]}<rt>${whole[2]}</rt></ruby>`;
+    }
+    return text.replace(/(.)[（(](.*?)[）)]/gu, '<ruby>$1<rt>$2</rt></ruby>');
+  }
+  const furigana = toFurigana(raw);
+  document.getElementById("furigana-output").innerHTML = furigana;
+})();
+</script>
