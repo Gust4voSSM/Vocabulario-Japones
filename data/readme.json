@@ -5,14 +5,33 @@
       "portuguese": "pessoa"
     },
     {
-      "japanese": "入(いり)口(くち)",
-      "romaji": "iriguchi",
-      "portuguese": "entrada"
+      "japanese": "口(くち)",
+      "portuguese": "boca"
     },
     {
       "japanese": "欲(ほ)しい",
-      "kana": "ほしい",
       "portuguese": "quero"
+    },
+    {
+      "japanese": "入(い)り口(ぐち)",
+      "portuguese": "entrada"
+    },
+    {
+      "japanese": "人(にん)間(げん)",
+      "portuguese": "humano"
+    },
+    {
+      "japanese": "入(いる)間(ま)くん",
+      "romaji": "Iruma-kun",
+      "portuguese": "Iruma"
+    },
+    {
+      "japanese": "塊(かたまり)",
+      "portuguese": "amontoado, amalgama"
+    },
+    {
+      "japanese": "魂(たましい)",
+      "portuguese": "alma"
     },
     {
       "japanese": "悪(あく)",
@@ -20,8 +39,9 @@
     }
   ],
   "glossaries": {
-    "cap1-core": ["人(ひと)", "入(いり)口(くち)", "欲(ほ)しい"],
-    "cap1-extra": ["悪(あく)"]
+    "cap1-basic-1": ["人", "口", "欲しい"],
+    "cap1-basic-2": ["入り口", "人間", "入間くん"],
+    "cap1-katamari-damacy": ["塊", "魂"]
   },
   "kanjiCatalog": {
     "人": {

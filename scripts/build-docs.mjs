@@ -88,6 +88,10 @@ function slugFromIds(ids) {
   return ids.join("-").toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "") || "deck";
 }
 
+function sanitizeDeckId(value) {
+  return String(value ?? "").toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "") || "deck";
+}
+
 function stripHints(raw) {
   const withoutRuby = String(raw)
     .replace(/<ruby>\s*([^<]+?)\s*(?:<rp>.*?<\/rp>)?\s*<rt>.*?<\/rt>\s*(?:<rp>.*?<\/rp>)?\s*<\/ruby>/giu, "$1")
@@ -97,7 +101,7 @@ function stripHints(raw) {
 
 function toRuby(text) {
   const raw = String(text);
-  const whole = raw.match(/^(.+?)[（(]([^）)]+)[）)]$/u);
+  const whole = raw.match(/^([^()（）]+)[（(]([^）)]+)[）)]$/u);
   if (whole) {
     return `<ruby>${whole[1]}<rt>${whole[2]}</rt></ruby>`;
   }
@@ -160,7 +164,7 @@ function kanaToRomajiText(text) {
     i += 1;
   }
 
-  return result.replace(/n([aiueoy])/g, "n'$1");
+  return result;
 }
 
 function normalizeVocab(rawList) {
@@ -325,38 +329,50 @@ function encodeCards(entries) {
   return Buffer.from(JSON.stringify(cards), "utf8").toString("base64");
 }
 
-function renderEmbed(entries, glossaryIds) {
-  const slug = slugFromIds(glossaryIds);
-  const id = `embed-${slug}`;
+function cardsForDeck(entries) {
+  return entries.map((entry) => ({
+    vocabId: entry.vocabId,
+    Japones: entry.japaneseRaw,
+    Romaji: entry.romaji,
+    Portugues: entry.portuguese
+  }));
+}
+
+function renderEmbed(entries, config) {
+  const id = `embed-${config.localSlug}`;
   const dataB64 = encodeCards(entries);
-  const deckHref = `decks/${slug}.apkg`;
+  const globalDeckHref = `decks/${config.globalFile}`;
+  const localDeckHref = `decks/${config.localFile}`;
+  const firstPassNoShuffleAttr = config.firstPassNoShuffle ? " data-first-pass-no-shuffle=\"1\"" : "";
+  const shuffleDisabledAttr = config.firstPassNoShuffle ? " disabled" : "";
 
   const html = [
-    `<div class=\"anki-embed\" id=\"${id}\" data-cards-b64=\"${dataB64}\">`,
-    "  <div class=\"anki-card\" data-face=\"front\"></div>",
-    "  <div class=\"anki-controls\">",
-    "    <button type=\"button\" data-action=\"prev\">Anterior</button>",
-    "    <button type=\"button\" data-action=\"flip\">Virar</button>",
-    "    <button type=\"button\" data-action=\"next\">Próxima</button>",
-    "    <button type=\"button\" data-action=\"shuffle\">Embaralhar</button>",
-    `    <a href=\"${deckHref}\" class=\"deck-download\" download>Baixar deck</a>`,
+    "<div class=\"anki-embed-group\">",
+    `  <div class=\"anki-embed\" id=\"${id}\" data-cards-b64=\"${dataB64}\"${firstPassNoShuffleAttr}>`,
+    "    <div class=\"anki-card\" data-face=\"front\"></div>",
+    "    <div class=\"anki-controls\">",
+    "      <button type=\"button\" class=\"icon-only\" data-action=\"prev\" title=\"Anterior\" aria-label=\"Anterior\"><i class=\"fa-solid fa-chevron-left\" aria-hidden=\"true\"></i></button>",
+    "      <button type=\"button\" class=\"icon-only flip-toggle\" data-action=\"flip\" title=\"Virar\" aria-label=\"Virar\"><i class=\"fa-regular fa-eye\" aria-hidden=\"true\"></i><i class=\"fa-solid fa-eye\" aria-hidden=\"true\"></i></button>",
+    "      <button type=\"button\" class=\"icon-only\" data-action=\"next\" title=\"Próxima\" aria-label=\"Próxima\"><i class=\"fa-solid fa-chevron-right\" aria-hidden=\"true\"></i></button>",
+    `      <button type="button" class="icon-only" data-action="shuffle" title="Embaralhar" aria-label="Embaralhar"${shuffleDisabledAttr}><i class="fa-solid fa-shuffle" aria-hidden="true"></i></button>`,
+    "    </div>",
+    "  </div>",
+    "  <div class=\"anki-export-controls\">",
+    `    <a href=\"${globalDeckHref}\" class=\"deck-download deck-primary\" download>Adicionar ao deck</a>`,
+    `    <a href=\"${localDeckHref}\" class=\"deck-download deck-secondary\" download>Exportar só este bloco</a>`,
     "  </div>",
     "</div>"
   ];
 
-  return { html: html.join("\n"), slug, cardsForDeck: entries.map((entry) => ({
-    Japones: entry.japaneseRaw,
-    Romaji: entry.romaji,
-    Portugues: entry.portuguese
-  })) };
+  return { html: html.join("\n"), cards: cardsForDeck(entries) };
 }
 
 function parseEmbedRequests(templateRaw) {
   const requests = [];
-  const regex = /{{{\s*Embed\s+"([^"]+)"\s*}}}/g;
+  const regex = /{{{\s*Embed\s+"([^"]+)"\s+"([^"]+)"\s*}}}/g;
   let match = regex.exec(templateRaw);
   while (match) {
-    requests.push(match[1]);
+    requests.push({ deckId: match[1], glossaries: match[2] });
     match = regex.exec(templateRaw);
   }
   return requests;
@@ -388,17 +404,26 @@ function ensurePythonReady(embedRequestsCount) {
 }
 
 async function exportDecks(pythonPath, deckPayloads) {
-  if (!pythonPath || deckPayloads.length === 0) {
+  const localDecks = Array.from(deckPayloads.local.values());
+  const globalDecks = Array.from(deckPayloads.global.values()).map((deck) => ({
+    fileName: deck.fileName,
+    deckName: deck.deckName,
+    cards: Array.from(deck.cardsByVocab.values())
+  }));
+  const allDecks = [...globalDecks, ...localDecks];
+
+  if (!pythonPath || allDecks.length === 0) {
     return;
   }
 
   await mkdir(deckBuildDir, { recursive: true });
 
-  for (const deck of deckPayloads) {
-    const inputPath = path.join(deckBuildDir, `${deck.slug}.json`);
-    const outputPathDeck = path.join(decksDir, `${deck.slug}.apkg`);
+  for (const deck of allDecks) {
+    const inputStem = deck.fileName.replace(/\.apkg$/i, "");
+    const inputPath = path.join(deckBuildDir, `${inputStem}.json`);
+    const outputPathDeck = path.join(decksDir, deck.fileName);
     await writeFile(inputPath, JSON.stringify({
-      deck_name: `SiteJapones::${deck.slug}`,
+      deck_name: deck.deckName,
       cards: deck.cards
     }, null, 2), "utf8");
 
@@ -409,7 +434,7 @@ async function exportDecks(pythonPath, deckPayloads) {
     ], { stdio: "pipe", encoding: "utf8" });
 
     if (run.status !== 0) {
-      throw new Error(`Falha ao gerar deck '${deck.slug}': ${run.stderr || run.stdout}`);
+      throw new Error(`Falha ao gerar deck '${deck.fileName}': ${run.stderr || run.stdout}`);
     }
   }
 }
@@ -420,12 +445,49 @@ function registerHelpers(data, deckPayloads) {
     return new Handlebars.SafeString(renderVocabularyTable(entries));
   });
 
-  Handlebars.registerHelper("Embed", (glossaryIdsCsv) => {
+  Handlebars.registerHelper("Embed", (deckId, glossaryIdsCsv, maybeFlag, maybeOptions) => {
+    const options = maybeOptions && maybeOptions.hash ? maybeOptions : (maybeFlag && maybeFlag.hash ? maybeFlag : null);
+    const flagArg = typeof maybeFlag === "string" ? maybeFlag.trim().toLowerCase() : "";
+    const firstPassNoShuffle = Boolean(
+      options?.hash?.firstPassNoShuffle ||
+      flagArg === "firstpassnoshuffle" ||
+      flagArg === "no-shuffle-first-pass" ||
+      flagArg === "lock-shuffle-first-pass"
+    );
+    const deckLabel = String(deckId ?? "").trim();
+    if (!deckLabel) {
+      throw new Error("Embed exige deckId: {{{Embed \"deck-id\" \"glossario1,glossario2\"}}}");
+    }
+    if (typeof glossaryIdsCsv !== "string") {
+      throw new Error("Embed exige glossarios CSV como segundo argumento: {{{Embed \"deck-id\" \"glossario1,glossario2\"}}}");
+    }
     const { glossaryIds, entries } = resolveGlossary(glossaryIdsCsv, data.glossaries, data.vocabIndex);
-    const rendered = renderEmbed(entries, glossaryIds);
+    const deckKey = sanitizeDeckId(deckLabel);
+    const localSuffix = slugFromIds(glossaryIds);
+    const localSlug = `${deckKey}-${localSuffix}`;
+    const localFile = `${deckKey}__${localSuffix}.apkg`;
+    const globalFile = `${deckKey}.apkg`;
+    const rendered = renderEmbed(entries, { localSlug, localFile, globalFile, firstPassNoShuffle });
 
-    if (!deckPayloads.some((item) => item.slug === rendered.slug)) {
-      deckPayloads.push({ slug: rendered.slug, cards: rendered.cardsForDeck });
+    if (!deckPayloads.local.has(localFile)) {
+      deckPayloads.local.set(localFile, {
+        fileName: localFile,
+        deckName: `SiteJapones::${deckLabel}::bloco::${localSuffix}`,
+        cards: rendered.cards
+      });
+    }
+
+    if (!deckPayloads.global.has(globalFile)) {
+      deckPayloads.global.set(globalFile, {
+        fileName: globalFile,
+        deckName: `SiteJapones::${deckLabel}`,
+        cardsByVocab: new Map()
+      });
+    }
+
+    const globalDeck = deckPayloads.global.get(globalFile);
+    for (const card of rendered.cards) {
+      globalDeck.cardsByVocab.set(card.vocabId, card);
     }
 
     return new Handlebars.SafeString(rendered.html);
@@ -453,7 +515,7 @@ const normalized = {
 
 const embedRequests = parseEmbedRequests(templateSource);
 const pythonPath = ensurePythonReady(embedRequests.length);
-const decksToBuild = [];
+const decksToBuild = { local: new Map(), global: new Map() };
 registerHelpers(normalized, decksToBuild);
 
 const template = Handlebars.compile(templateSource, { noEscape: true });
@@ -463,6 +525,11 @@ await writeFile(outputPath, rendered, "utf8");
 await exportDecks(pythonPath, decksToBuild);
 
 console.log(`README generated from ${path.relative(rootDir, dataPath)} using ${path.relative(rootDir, templatePath)}.`);
-if (decksToBuild.length > 0) {
-  console.log(`Decks generated: ${decksToBuild.map((item) => `${item.slug}.apkg`).join(", ")}`);
+const generatedDeckFiles = [
+  ...Array.from(decksToBuild.global.keys()),
+  ...Array.from(decksToBuild.local.keys())
+];
+if (generatedDeckFiles.length > 0) {
+  console.log(`Decks generated: ${generatedDeckFiles.join(", ")}`);
 }
+

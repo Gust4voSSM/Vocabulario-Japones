@@ -7,7 +7,7 @@
 (() => {
   const raw = document.getElementById("src").textContent.trim();
   function toFurigana(text) {
-    const whole = text.match(/^(.+?)[（(]([^）)]+)[）)]$/u);
+    const whole = text.match(/^([^()（）]+)[（(]([^）)]+)[）)]$/u);
     if (whole) {
       return `<ruby>${whole[1]}<rt>${whole[2]}</rt></ruby>`;
     }
@@ -17,3 +17,4 @@
   document.getElementById("furigana-output").innerHTML = furigana;
 })();
 </script>
+

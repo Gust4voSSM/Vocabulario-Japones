@@ -10,7 +10,7 @@
   const raw = document.getElementById("src").textContent.trim();
   const romajiField = document.getElementById("romaji-src").textContent.trim();
   function extractKana(text) {
-    const whole = text.match(/^(.+?)[（(]([^）)]+)[）)]$/u);
+    const whole = text.match(/^([^()（）]+)[（(]([^）)]+)[）)]$/u);
     if (whole) {
       return whole[2];
     }
@@ -73,7 +73,7 @@
       }
       i += 1;
     }
-    return out.replace(/n([aiueoy])/g, "n'$1");
+    return out;
   }
 
   const kana = extractKana(raw);
@@ -81,3 +81,4 @@
   document.getElementById("romaji-output").textContent = romaji;
 })();
 </script>
+
