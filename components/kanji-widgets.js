@@ -2,10 +2,11 @@ import { escapeHtml } from "./utils.js";
 
 var KANJI_TOKEN_COLORS = {
   "red-500": "#ef4444",
-  "blue-500": "#3b82f6",
+  "blue-500": "#00ddff",
   "amber-500": "#f59e0b",
   "pink-500": "#ec4899",
-  "green-500": "#22c55e",
+  "green-500": "#79f01f",
+  "purple-500": "#ab51ff",
   "slate-500": "#64748b",
 };
 
@@ -639,12 +640,16 @@ function ensureRadicalTooltip(group, kanji, meaning) {
 }
 
 function applyRadicalConfig(svgRoot, radicals) {
-  if (!svgRoot || !radicals || typeof radicals !== "object" || Array.isArray(radicals)) {
+  if (!svgRoot) {
     return;
   }
 
-  Object.keys(radicals).forEach(function (radicalId) {
-    var cfg = radicals[radicalId] || {};
+  var radicalConfig = (!radicals || typeof radicals !== "object" || Array.isArray(radicals))
+    ? {}
+    : radicals;
+
+  Object.keys(radicalConfig).forEach(function (radicalId) {
+    var cfg = radicalConfig[radicalId] || {};
     var colorToken = String(cfg.colorCode || "").trim();
     var meaning = String(cfg.significado || "").trim();
     var kanjiLabel = String(cfg.kanji || radicalId || "").trim();
@@ -687,13 +692,13 @@ export function hydrateKanjiVerbete(root, verbetes) {
 
   root.classList.add("kanji-verbete-widget");
   if (!slot.valid || !slot.svg || !slot.kanjiId) {
-    renderKanjiFallback(root, slot.reason || "Verbete de kanji indisponível.");
+    renderKanjiFallback(root, slot.reason || "Verbete de kanji indisponivel.");
     return;
   }
 
   var svgHtml = buildKanjiSvgMarkup(slot.svg);
   if (!svgHtml) {
-    renderKanjiFallback(root, "SVG inválido no verbete.");
+    renderKanjiFallback(root, "SVG invalido no verbete.");
     return;
   }
 
@@ -704,10 +709,10 @@ export function hydrateKanjiVerbete(root, verbetes) {
     readingsHtml = '<blockquote class="kanji-readings">';
     readingsHtml += "<p>Leituras relevantes para o capitulo</p>";
     if (kunyomi.length > 0) {
-      readingsHtml += '<p>Japonesa (<em>kun’yomi</em>): ' + escapeHtml(kunyomi.join(", ")) + "</p>";
+      readingsHtml += '<p>Japonesa (<em>kun\'yomi</em>): ' + escapeHtml(kunyomi.join(", ")) + "</p>";
     }
     if (onyomi.length > 0) {
-      readingsHtml += '<p>Chinesa (<em>on’yomi</em>): ' + escapeHtml(onyomi.join(", ")) + "</p>";
+      readingsHtml += '<p>Chinesa (<em>on\'yomi</em>): ' + escapeHtml(onyomi.join(", ")) + "</p>";
     }
     readingsHtml += "</blockquote>";
   }
@@ -736,32 +741,37 @@ export function hydrateKanjiComparacao(root, comparacoes) {
 
   root.classList.add("kanji-comparacao-widget");
   if (!slot.valid || !slot.leftSvg || !slot.rightSvg || !slot.leftKanji || !slot.rightKanji) {
-    renderKanjiFallback(root, slot.reason || "Comparação de kanji indisponível.");
+    renderKanjiFallback(root, slot.reason || "Comparacao de kanji indisponivel.");
     return;
   }
+  root.setAttribute("data-left-kanji", slot.leftKanji);
+  root.setAttribute("data-right-kanji", slot.rightKanji);
 
   var leftSvgHtml = buildKanjiSvgMarkup(slot.leftSvg);
   var rightSvgHtml = buildKanjiSvgMarkup(slot.rightSvg);
   if (!leftSvgHtml || !rightSvgHtml) {
-    renderKanjiFallback(root, "SVG inválido na comparação.");
+    renderKanjiFallback(root, "SVG invalido na comparacao.");
     return;
   }
 
   root.innerHTML = ""
     + '<h4 class="kanji-comparacao-title">Saiba seu kanji</h4>'
     + '<div class="kanji-comparacao-grid">'
-    + '  <div class="kanji-comparacao-side">'
+    + '  <a class="kanji-ref kanji-comparacao-side" href="#/?id=' + encodeURIComponent(slot.leftKanji) + '" aria-label="Abrir verbete de ' + escapeHtml(slot.leftKanji) + '">'
     + '    <div class="kanji-svg-wrap">' + leftSvgHtml + "</div>"
     + (slot.leftMeaning ? ('    <div class="kanji-meaning-text"><em>' + escapeHtml(slot.leftMeaning) + "</em></div>") : "")
-    + "  </div>"
-    + '  <div class="kanji-comparacao-side">'
+    + "  </a>"
+    + '  <a class="kanji-ref kanji-comparacao-side" href="#/?id=' + encodeURIComponent(slot.rightKanji) + '" aria-label="Abrir verbete de ' + escapeHtml(slot.rightKanji) + '">'
     + '    <div class="kanji-svg-wrap">' + rightSvgHtml + "</div>"
     + (slot.rightMeaning ? ('    <div class="kanji-meaning-text"><em>' + escapeHtml(slot.rightMeaning) + "</em></div>") : "")
-    + "  </div>"
+    + "  </a>"
     + "</div>";
 
-  var leftSvg = root.querySelector(".kanji-comparacao-side:nth-child(1) svg.kanji-svg");
-  var rightSvg = root.querySelector(".kanji-comparacao-side:nth-child(2) svg.kanji-svg");
+  var sideSvgs = root.querySelectorAll(".kanji-comparacao-side svg.kanji-svg");
+  var leftSvg = sideSvgs[0] || null;
+  var rightSvg = sideSvgs[1] || null;
   applyRadicalConfig(leftSvg, slot.radicals || {});
   applyRadicalConfig(rightSvg, slot.radicals || {});
 }
+
+

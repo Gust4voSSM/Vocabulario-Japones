@@ -329,6 +329,7 @@
 }
 
 .markdown-section .kanji-comparacao-side {
+  display: block;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
   padding: 0.55rem 0.45rem 0.65rem;

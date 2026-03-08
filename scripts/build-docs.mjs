@@ -967,6 +967,35 @@ function buildVerbeteRadicalConfig(rawVerbeteRadicals, svgDef, radicalCatalog) {
   return merged;
 }
 
+function buildComparacaoRadicalConfig(rawComparacaoRadicals, leftSvgDef, rightSvgDef, radicalCatalog) {
+  const explicit = normalizeRadicalDict(rawComparacaoRadicals, radicalCatalog);
+  const merged = {};
+  const leftRadicals = (leftSvgDef?.radicais && typeof leftSvgDef.radicais === "object" && !Array.isArray(leftSvgDef.radicais))
+    ? leftSvgDef.radicais
+    : {};
+  const rightRadicals = (rightSvgDef?.radicais && typeof rightSvgDef.radicais === "object" && !Array.isArray(rightSvgDef.radicais))
+    ? rightSvgDef.radicais
+    : {};
+
+  for (const radicalId of new Set([...Object.keys(leftRadicals), ...Object.keys(rightRadicals)])) {
+    if (!radicalId) {
+      continue;
+    }
+    const meaning = String(radicalCatalog?.[radicalId]?.significado ?? "").trim();
+    merged[radicalId] = meaning ? { significado: meaning } : {};
+  }
+
+  for (const [radicalId, cfg] of Object.entries(explicit)) {
+    const base = merged[radicalId] && typeof merged[radicalId] === "object" ? merged[radicalId] : {};
+    merged[radicalId] = {
+      ...base,
+      ...(cfg && typeof cfg === "object" ? cfg : {})
+    };
+  }
+
+  return merged;
+}
+
 function parseKanjiPairId(rawPairId) {
   const parts = String(rawPairId ?? "").split("|").map((item) => item.trim());
   if (parts.length !== 2 || !parts[0] || !parts[1]) {
@@ -1051,13 +1080,13 @@ function renderComparacaoComponent(pairId, comparacaoKanji, kanjiSvgCatalog, kan
   const cleanId = String(pairId ?? "").trim();
   const slotId = slotIdFromText("comparacao", cleanId);
   const pair = parseKanjiPairId(cleanId);
-  const radicals = normalizeRadicalDict(comparacaoKanji?.[cleanId], radicalCatalog);
   const leftKanji = pair?.leftKanji ?? "";
   const rightKanji = pair?.rightKanji ?? "";
   const leftMeaning = String(kanjiCatalog?.[leftKanji]?.significado ?? "").trim();
   const rightMeaning = String(kanjiCatalog?.[rightKanji]?.significado ?? "").trim();
   const leftSvg = leftKanji ? (kanjiSvgCatalog?.[leftKanji] ?? null) : null;
   const rightSvg = rightKanji ? (kanjiSvgCatalog?.[rightKanji] ?? null) : null;
+  const radicals = buildComparacaoRadicalConfig(comparacaoKanji?.[cleanId], leftSvg, rightSvg, radicalCatalog);
 
   const slot = {
     id: slotId,

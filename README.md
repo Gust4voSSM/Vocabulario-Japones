@@ -17,9 +17,11 @@ Mairimashita! Iruma-kun é um mangá escrito por Osamu Nishi e publicado pela Sh
 
 ### Humano
 
+[[anki-embed:embed-iruma-cap1-cap1-basic-1]]
+
 [[kanji-comparacao:comparacao-4eba-7c-5165]]
 
-[[anki-embed:embed-iruma-cap1-cap1-basic-1-cap1-basic-2]]
+[[anki-embed:embed-iruma-cap1-cap1-basic-2-cap1-basic-1]]
 
 ---
 
@@ -60,12 +62,6 @@ Katamari Damacy é um jogo de videogame publicado pela Namco em 2004.
 [[kanji-verbete:verbete-6821]]
 
 [[kanji-verbete:verbete-6b32]]
-
-[[kanji-verbete:verbete-60aa]]
-
-[[kanji-verbete:verbete-9b42]]
-
-[[kanji-verbete:verbete-584a]]
 
 [[kanji-verbete:verbete-53e3]]
 

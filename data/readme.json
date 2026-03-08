@@ -61,9 +61,9 @@
   ],
   "glossaries": {
     "cap1-basic-1": ["人", "口", "土", "心", "鬼"],
-    "cap1-basic-2": ["入り口", "人間", "入間くん", "欲しい", "悪"],
+    "cap1-basic-2": ["入り口", "人間", "入間くん", "欲しい"],
     "cap1-katamari-damacy": ["塊", "魂"],
-    "cap1-demons": ["悪魔", "魔王"]
+    "cap1-demons": ["悪", "魔王", "悪魔"]
   },
   "kanjiCatalog": {
     "人": {
@@ -148,30 +148,27 @@
     }
   },
   "kanjiSets": {
-    "cap1-main": ["人", "入", "学", "生", "校", "欲", "悪", "魂", "塊", "口", "間"]
+    "cap1-main": ["人", "入", "学", "生", "校", "欲", "口", "間"]
   },
   "verbete_kanji": {
     "悪": {
       "心": {
-        "colorCode": "pink-500"
+        "colorCode": "red-500"
       }
     },
     "魔": {
       "鬼": {
-        "colorCode": "red-500"
+        "colorCode": "purple-500"
       }
     }
   },
   "comparacao_kanji": {
     "塊|魂": {
       "鬼": {
-        "colorCode": "blue-500"
+        "colorCode": "purple-500"
       },
       "土": {
         "colorCode": "amber-500"
-      },
-      "云": {
-        "colorCode": "pink-500"
       }
     },
     "人|入": {}
@@ -195,7 +192,7 @@
     "云": {
       "significado": "nuvem"
     },
-    "麻": {
+    "disabled_麻": {
       "significado": "linho"
     }
   }
