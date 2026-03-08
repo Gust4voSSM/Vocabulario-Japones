@@ -488,6 +488,85 @@ function getTooltipGroupsAtPointer(svgRoot, clientX, clientY) {
   return groups;
 }
 
+function parseSvgPoints(pointsRaw) {
+  return String(pointsRaw || "")
+    .trim()
+    .split(/\s+/)
+    .map(function (token) {
+      var pair = token.split(",");
+      if (pair.length !== 2) {
+        return null;
+      }
+      var x = Number(pair[0]);
+      var y = Number(pair[1]);
+      if (!Number.isFinite(x) || !Number.isFinite(y)) {
+        return null;
+      }
+      return { x: x, y: y };
+    })
+    .filter(Boolean);
+}
+
+function polygonArea(points) {
+  if (!Array.isArray(points) || points.length < 3) {
+    return Infinity;
+  }
+  var area = 0;
+  for (var i = 0; i < points.length; i += 1) {
+    var a = points[i];
+    var b = points[(i + 1) % points.length];
+    area += (a.x * b.y) - (b.x * a.y);
+  }
+  return Math.abs(area / 2);
+}
+
+function getGroupHoverArea(group) {
+  if (!group) {
+    return Infinity;
+  }
+
+  var hull = group.querySelector(".kanji-radical-hull");
+  if (hull) {
+    var hullArea = polygonArea(parseSvgPoints(hull.getAttribute("points")));
+    if (Number.isFinite(hullArea) && hullArea > 0) {
+      return hullArea;
+    }
+  }
+
+  try {
+    var bbox = group.getBBox();
+    var area = Number(bbox.width) * Number(bbox.height);
+    if (Number.isFinite(area) && area > 0) {
+      return area;
+    }
+  } catch (_error) {
+    // ignore and fallback
+  }
+
+  return Infinity;
+}
+
+function pickInnermostTooltipGroup(groups) {
+  if (!Array.isArray(groups) || groups.length === 0) {
+    return null;
+  }
+  if (groups.length === 1) {
+    return groups[0];
+  }
+
+  var best = groups[0];
+  var bestArea = getGroupHoverArea(best);
+  for (var i = 1; i < groups.length; i += 1) {
+    var candidate = groups[i];
+    var area = getGroupHoverArea(candidate);
+    if (area < bestArea) {
+      best = candidate;
+      bestArea = area;
+    }
+  }
+  return best;
+}
+
 function ensureRadicalTooltip(group, kanji, meaning) {
   var kanjiText = String(kanji || "").trim();
   var meaningText = String(meaning || "").trim();
@@ -527,7 +606,8 @@ function ensureRadicalTooltip(group, kanji, meaning) {
     }
 
     var hoveredGroups = getTooltipGroupsAtPointer(group.ownerSVGElement, event.clientX, event.clientY);
-    if (hoveredGroups.length !== 1 || hoveredGroups[0] !== group) {
+    var targetGroup = pickInnermostTooltipGroup(hoveredGroups);
+    if (!targetGroup || targetGroup !== group) {
       hideRadicalTooltip();
       return;
     }
@@ -601,6 +681,9 @@ export function hydrateKanjiVerbete(root, verbetes) {
   if (!slot) {
     return;
   }
+  if (slot.kanjiId) {
+    root.setAttribute("data-kanji-id", slot.kanjiId);
+  }
 
   root.classList.add("kanji-verbete-widget");
   if (!slot.valid || !slot.svg || !slot.kanjiId) {
@@ -614,10 +697,26 @@ export function hydrateKanjiVerbete(root, verbetes) {
     return;
   }
 
+  var kunyomi = Array.isArray(slot.kunyomi) ? slot.kunyomi.filter(Boolean) : [];
+  var onyomi = Array.isArray(slot.onyomi) ? slot.onyomi.filter(Boolean) : [];
+  var readingsHtml = "";
+  if (kunyomi.length > 0 || onyomi.length > 0) {
+    readingsHtml = '<blockquote class="kanji-readings">';
+    readingsHtml += "<p>Leituras relevantes para o capitulo</p>";
+    if (kunyomi.length > 0) {
+      readingsHtml += '<p>Japonesa (<em>kun’yomi</em>): ' + escapeHtml(kunyomi.join(", ")) + "</p>";
+    }
+    if (onyomi.length > 0) {
+      readingsHtml += '<p>Chinesa (<em>on’yomi</em>): ' + escapeHtml(onyomi.join(", ")) + "</p>";
+    }
+    readingsHtml += "</blockquote>";
+  }
+
   root.innerHTML = '<div class="kanji-svg-wrap">' + svgHtml + "</div>";
   if (slot.meaning) {
-    root.innerHTML += '<div class="kanji-meaning-text">' + escapeHtml(slot.meaning) + "</div>";
+    root.innerHTML += '<div class="kanji-meaning-text"><em>' + escapeHtml(slot.meaning) + "</em></div>";
   }
+  root.innerHTML += readingsHtml;
 
   var svgRoot = root.querySelector("svg.kanji-svg");
   applyRadicalConfig(svgRoot, slot.radicals || {});
@@ -653,11 +752,11 @@ export function hydrateKanjiComparacao(root, comparacoes) {
     + '<div class="kanji-comparacao-grid">'
     + '  <div class="kanji-comparacao-side">'
     + '    <div class="kanji-svg-wrap">' + leftSvgHtml + "</div>"
-    + (slot.leftMeaning ? ('    <div class="kanji-meaning-text">' + escapeHtml(slot.leftMeaning) + "</div>") : "")
+    + (slot.leftMeaning ? ('    <div class="kanji-meaning-text"><em>' + escapeHtml(slot.leftMeaning) + "</em></div>") : "")
     + "  </div>"
     + '  <div class="kanji-comparacao-side">'
     + '    <div class="kanji-svg-wrap">' + rightSvgHtml + "</div>"
-    + (slot.rightMeaning ? ('    <div class="kanji-meaning-text">' + escapeHtml(slot.rightMeaning) + "</div>") : "")
+    + (slot.rightMeaning ? ('    <div class="kanji-meaning-text"><em>' + escapeHtml(slot.rightMeaning) + "</em></div>") : "")
     + "  </div>"
     + "</div>";
 

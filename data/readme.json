@@ -107,7 +107,14 @@
       "significado": "boca"
     },
     "間": {
-      "significado": "período"
+      "significado": "período",
+      "radicais": {
+        "門": {
+          "position": "kamae"
+        },
+        "日": {
+        }
+      }
     }
   },
   "kanjiSets": {
@@ -116,26 +123,42 @@
   "verbete_kanji": {
     "悪": {
       "心": {
-        "colorCode": "pink-500",
-        "significado": "coração"
+        "colorCode": "pink-500"
       }
     }
   },
   "comparacao_kanji": {
     "塊|魂": {
       "鬼": {
-        "colorCode": "blue-500",
-        "significado": "oni"
+        "colorCode": "blue-500"
       },
       "土": {
-        "colorCode": "amber-500",
-        "significado": "chão"
+        "colorCode": "amber-500"
       },
       "云": {
-        "colorCode": "pink-500",
-        "significado": "nuvem"
+        "colorCode": "pink-500"
       }
     },
     "人|入": {}
+  },
+  "radicais": {
+    "日": {
+      "significado": "sol"
+    },
+    "門": {
+      "significado": "portão"
+    },
+    "心": {
+      "significado": "coração"
+    },
+    "鬼": {
+      "significado": "oni"
+    },
+    "土": {
+      "significado": "chão"
+    },
+    "云": {
+      "significado": "nuvem"
+    }
   }
 }

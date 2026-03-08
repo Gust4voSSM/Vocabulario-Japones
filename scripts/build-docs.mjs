@@ -900,7 +900,7 @@ function slotIdFromText(prefix, text) {
   return `${prefix}-${codepoints || "x"}`;
 }
 
-function normalizeRadicalDict(rawRadicals) {
+function normalizeRadicalDict(rawRadicals, radicalCatalog) {
   if (!rawRadicals || typeof rawRadicals !== "object" || Array.isArray(rawRadicals)) {
     return {};
   }
@@ -923,10 +923,39 @@ function normalizeRadicalDict(rawRadicals) {
       }
     }
 
+    if (!value.significado) {
+      const catalogMeaning = String(radicalCatalog?.[radicalId]?.significado ?? "").trim();
+      if (catalogMeaning) {
+        value.significado = catalogMeaning;
+      }
+    }
+
     out[radicalId] = value;
   }
 
   return out;
+}
+
+function buildVerbeteRadicalConfig(rawVerbeteRadicals, svgDef, radicalCatalog) {
+  const explicit = normalizeRadicalDict(rawVerbeteRadicals, radicalCatalog);
+  if (Object.keys(explicit).length > 0) {
+    return explicit;
+  }
+
+  const fallback = {};
+  const svgRadicals = (svgDef?.radicais && typeof svgDef.radicais === "object" && !Array.isArray(svgDef.radicais))
+    ? svgDef.radicais
+    : {};
+
+  for (const radicalId of Object.keys(svgRadicals)) {
+    if (!radicalId) {
+      continue;
+    }
+    const meaning = String(radicalCatalog?.[radicalId]?.significado ?? "").trim();
+    fallback[radicalId] = meaning ? { significado: meaning } : {};
+  }
+
+  return fallback;
 }
 
 function parseKanjiPairId(rawPairId) {
@@ -937,17 +966,25 @@ function parseKanjiPairId(rawPairId) {
   return { leftKanji: parts[0], rightKanji: parts[1] };
 }
 
-function renderVerbeteComponent(kanjiId, verbeteKanji, kanjiSvgCatalog, kanjiCatalog) {
+function renderVerbeteComponent(kanjiId, verbeteKanji, kanjiSvgCatalog, kanjiCatalog, radicalCatalog) {
   const cleanId = String(kanjiId ?? "").trim();
   const slotId = slotIdFromText("verbete", cleanId);
-  const radicals = normalizeRadicalDict(verbeteKanji?.[cleanId]);
   const svg = kanjiSvgCatalog?.[cleanId] ?? null;
+  const radicals = buildVerbeteRadicalConfig(verbeteKanji?.[cleanId], svg, radicalCatalog);
   const meaning = String(kanjiCatalog?.[cleanId]?.significado ?? "").trim();
+  const kunyomi = Array.isArray(kanjiCatalog?.[cleanId]?.kunyomi)
+    ? kanjiCatalog[cleanId].kunyomi.filter(Boolean).map((v) => String(v).trim()).filter(Boolean)
+    : [];
+  const onyomi = Array.isArray(kanjiCatalog?.[cleanId]?.onyomi)
+    ? kanjiCatalog[cleanId].onyomi.filter(Boolean).map((v) => String(v).trim()).filter(Boolean)
+    : [];
 
   const slot = {
     id: slotId,
     kanjiId: cleanId,
     meaning,
+    kunyomi,
+    onyomi,
     radicals,
     svg,
     valid: Boolean(cleanId && svg)
@@ -966,11 +1003,46 @@ function renderVerbeteComponent(kanjiId, verbeteKanji, kanjiSvgCatalog, kanjiCat
   };
 }
 
-function renderComparacaoComponent(pairId, comparacaoKanji, kanjiSvgCatalog, kanjiCatalog) {
+function renderVerbetesFromSet(
+  setIdsCsv,
+  kanjiSets,
+  verbeteKanji,
+  kanjiSvgCatalog,
+  kanjiCatalog,
+  radicalCatalog,
+  verbeteSlots
+) {
+  const setIds = splitIds(setIdsCsv);
+  const kanjiSeen = new Set();
+  const htmlParts = [];
+
+  for (const setId of setIds) {
+    const kanjiIds = kanjiSets?.[setId];
+    if (!Array.isArray(kanjiIds)) {
+      console.warn(`[missing] kanjiSet '${setId}' nao encontrado.`);
+      continue;
+    }
+
+    for (const kanjiId of kanjiIds) {
+      const cleanId = String(kanjiId ?? "").trim();
+      if (!cleanId || kanjiSeen.has(cleanId)) {
+        continue;
+      }
+      kanjiSeen.add(cleanId);
+      const rendered = renderVerbeteComponent(cleanId, verbeteKanji, kanjiSvgCatalog, kanjiCatalog, radicalCatalog);
+      verbeteSlots.set(rendered.slot.id, rendered.slot);
+      htmlParts.push(rendered.html);
+    }
+  }
+
+  return htmlParts.join("\n\n");
+}
+
+function renderComparacaoComponent(pairId, comparacaoKanji, kanjiSvgCatalog, kanjiCatalog, radicalCatalog) {
   const cleanId = String(pairId ?? "").trim();
   const slotId = slotIdFromText("comparacao", cleanId);
   const pair = parseKanjiPairId(cleanId);
-  const radicals = normalizeRadicalDict(comparacaoKanji?.[cleanId]);
+  const radicals = normalizeRadicalDict(comparacaoKanji?.[cleanId], radicalCatalog);
   const leftKanji = pair?.leftKanji ?? "";
   const rightKanji = pair?.rightKanji ?? "";
   const leftMeaning = String(kanjiCatalog?.[leftKanji]?.significado ?? "").trim();
@@ -1191,11 +1263,32 @@ function registerHelpers(data, deckPayloads, embedSlots, tableSlots, verbeteSlot
     return new Handlebars.SafeString(renderKanjiSet(setIdsCsv, data.kanjiSets, data.kanjiCatalog));
   });
 
+  Handlebars.registerHelper("Verbetes", (setIdsCsv) => {
+    if (typeof setIdsCsv !== "string") {
+      throw new Error("Verbetes exige set ids CSV: {{{Verbetes \"cap1-main\"}}}");
+    }
+    return new Handlebars.SafeString(renderVerbetesFromSet(
+      setIdsCsv,
+      data.kanjiSets,
+      data.verbeteKanji,
+      data.kanjiSvgCatalog,
+      data.kanjiCatalog,
+      data.radicalCatalog,
+      verbeteSlots
+    ));
+  });
+
   Handlebars.registerHelper("Verbete", (kanjiId) => {
     if (typeof kanjiId !== "string") {
       throw new Error("Verbete exige kanji id string: {{{Verbete \"悪\"}}}");
     }
-    const rendered = renderVerbeteComponent(kanjiId, data.verbeteKanji, data.kanjiSvgCatalog, data.kanjiCatalog);
+    const rendered = renderVerbeteComponent(
+      kanjiId,
+      data.verbeteKanji,
+      data.kanjiSvgCatalog,
+      data.kanjiCatalog,
+      data.radicalCatalog
+    );
     verbeteSlots.set(rendered.slot.id, rendered.slot);
     return new Handlebars.SafeString(rendered.html);
   });
@@ -1208,7 +1301,8 @@ function registerHelpers(data, deckPayloads, embedSlots, tableSlots, verbeteSlot
       pairId,
       data.comparacaoKanji,
       data.kanjiSvgCatalog,
-      data.kanjiCatalog
+      data.kanjiCatalog,
+      data.radicalCatalog
     );
     comparacaoSlots.set(rendered.slot.id, rendered.slot);
     return new Handlebars.SafeString(rendered.html);
@@ -1237,6 +1331,7 @@ const normalized = {
   glossaries: jsonData.glossaries ?? {},
   kanjiCatalog: jsonData.kanjiCatalog ?? {},
   kanjiSets: jsonData.kanjiSets ?? {},
+  radicalCatalog: jsonData.radicais ?? {},
   verbeteKanji: jsonData.verbete_kanji ?? {},
   comparacaoKanji: jsonData.comparacao_kanji ?? {},
   kanjiSvgCatalog

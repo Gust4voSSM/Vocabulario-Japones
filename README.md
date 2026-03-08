@@ -37,71 +37,25 @@ Katamari Damacy é um jogo de videogame publicado pela Namco em 2004.
 
 ### Kanjis
 
----
-#### <span class="kanji-title">人</span>
+[[kanji-verbete:verbete-4eba]]
 
-*pessoa*
+[[kanji-verbete:verbete-5165]]
 
-> Leituras relevantes para o capítulo
->
-> Japonesa (*kun’yomi*): ひと
->
-> Chinesa (*on’yomi*): にん, じん
----
-#### <span class="kanji-title">入</span>
+[[kanji-verbete:verbete-5b66]]
 
-*entrar*
+[[kanji-verbete:verbete-751f]]
 
-> Leituras relevantes para o capítulo
->
-> Japonesa (*kun’yomi*): はい, い
----
-#### <span class="kanji-title">学</span>
+[[kanji-verbete:verbete-6821]]
 
-*estudar*
-
----
-#### <span class="kanji-title">生</span>
-
-*vida*
-
----
-#### <span class="kanji-title">校</span>
-
-*escola*
-
----
-#### <span class="kanji-title">欲</span>
-
-*querer*
-
----
-#### <span class="kanji-title">悪</span>
-
-*mau*
-
-> Leituras relevantes para o capítulo
->
-> Chinesa (*on’yomi*): あく
----
-#### <span class="kanji-title">魂</span>
-
-*alma*
-
----
-#### <span class="kanji-title">口</span>
-
-*boca*
-
----
-#### <span class="kanji-title">間</span>
-
-*período*
-
-
-### Verbete
+[[kanji-verbete:verbete-6b32]]
 
 [[kanji-verbete:verbete-60aa]]
+
+[[kanji-verbete:verbete-9b42]]
+
+[[kanji-verbete:verbete-53e3]]
+
+[[kanji-verbete:verbete-9593]]
 
 ---
 

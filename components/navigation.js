@@ -11,6 +11,13 @@ function scrollToKanjiHeading(kanjiId) {
   if (!kanjiId) {
     return false;
   }
+
+  var verbete = document.querySelector('.markdown-section kanji-verbete[data-kanji-id="' + kanjiId + '"]');
+  if (verbete) {
+    verbete.scrollIntoView({ behavior: "smooth", block: "start" });
+    return true;
+  }
+
   var titles = document.querySelectorAll(".markdown-section .kanji-title");
   for (var i = 0; i < titles.length; i += 1) {
     if ((titles[i].textContent || "").trim() === kanjiId) {
@@ -22,6 +29,21 @@ function scrollToKanjiHeading(kanjiId) {
     }
   }
   return false;
+}
+
+function scrollToKanjiWithRetry(kanjiId, retriesLeft) {
+  if (!kanjiId) {
+    return;
+  }
+  if (scrollToKanjiHeading(kanjiId)) {
+    return;
+  }
+  if (retriesLeft <= 0) {
+    return;
+  }
+  setTimeout(function () {
+    scrollToKanjiWithRetry(kanjiId, retriesLeft - 1);
+  }, 120);
 }
 
 export function bindKanjiReferenceNavigation() {
@@ -44,11 +66,22 @@ export function bindKanjiReferenceNavigation() {
 
     if (window.location.hash !== href) {
       window.location.hash = href;
-      setTimeout(function () {
-        scrollToKanjiHeading(kanjiId);
-      }, 0);
+      scrollToKanjiWithRetry(kanjiId, 12);
       return;
     }
-    scrollToKanjiHeading(kanjiId);
+    scrollToKanjiWithRetry(kanjiId, 12);
   });
+
+  window.addEventListener("hashchange", function () {
+    var kanjiId = extractKanjiIdFromHref(window.location.hash || "");
+    if (!kanjiId) {
+      return;
+    }
+    scrollToKanjiWithRetry(kanjiId, 12);
+  });
+
+  var initialKanjiId = extractKanjiIdFromHref(window.location.hash || "");
+  if (initialKanjiId) {
+    scrollToKanjiWithRetry(initialKanjiId, 12);
+  }
 }

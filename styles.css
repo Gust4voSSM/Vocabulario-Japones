@@ -332,10 +332,16 @@
 
 .markdown-section .kanji-meaning-text {
   margin-top: 0.35rem;
-  font-size: 0.9rem;
+  font-size: 1.8rem;
   line-height: 1.25;
-  color: #334155;
+  color: #475569;
+  font-style: italic;
   text-align: center;
+}
+
+.markdown-section .kanji-readings {
+  margin-top: 0.45rem;
+  font-size: 0.9rem;
 }
 
 .kanji-radical-tooltip {
