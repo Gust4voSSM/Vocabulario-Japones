@@ -9,8 +9,25 @@ const dataPath = path.join(rootDir, "data", "readme.json");
 const templatePath = path.join(rootDir, "templates", "readme.hbs");
 const outputPath = path.join(rootDir, "README.md");
 const embedsManifestPath = path.join(rootDir, "data", "embeds-manifest.json");
+const radicalSvgCachePath = path.join(rootDir, "data", "radical-svg-cache.json");
+const kanjiVgCachePath = path.join(rootDir, "data", "kanjivg-cache.json");
 const decksDir = path.join(rootDir, "decks");
 const deckBuildDir = path.join(decksDir, ".build");
+const skipDecks = process.env.BUILD_DOCS_SKIP_DECKS === "1";
+
+async function writeUtf8IfChanged(targetPath, content) {
+  const next = String(content);
+  try {
+    const prev = await readFile(targetPath, "utf8");
+    if (prev === next) {
+      return false;
+    }
+  } catch {
+    // File does not exist or cannot be read; write it.
+  }
+  await writeFile(targetPath, next, "utf8");
+  return true;
+}
 
 const KANA_TO_ROMAJI = {
   "あ": "a", "い": "i", "う": "u", "え": "e", "お": "o",
@@ -83,6 +100,469 @@ const MACRONS = { a: "ā", i: "ī", u: "ū", e: "ē", o: "ō" };
 
 function splitIds(csv) {
   return String(csv ?? "").split(",").map((item) => item.trim()).filter(Boolean);
+}
+
+function codepointGlyphId(char) {
+  const first = Array.from(String(char ?? "").trim())[0];
+  if (!first) {
+    return "";
+  }
+  const cpHex = first.codePointAt(0).toString(16).toLowerCase();
+  return `u${cpHex.padStart(4, "0")}`;
+}
+
+function parseGlyphSourceSpec(rawSourceSpec) {
+  const raw = String(rawSourceSpec ?? "").trim().toLowerCase();
+  if (!raw) {
+    return null;
+  }
+
+  if (/^u[0-9a-f]{4,6}(?:-[a-z0-9_]+)?$/i.test(raw)) {
+    return {
+      glyphId: raw,
+      sourceChar: "",
+      cacheKeys: [`id:${raw}`, raw]
+    };
+  }
+
+  const sourceChar = Array.from(raw)[0] ?? "";
+  if (!sourceChar) {
+    return null;
+  }
+
+  const glyphId = codepointGlyphId(sourceChar);
+  return {
+    glyphId,
+    sourceChar,
+    cacheKeys: [`char:${sourceChar}`, sourceChar, `id:${glyphId}`, glyphId]
+  };
+}
+
+function parseSvgPaths(rawSvg) {
+  const viewBoxMatch = String(rawSvg).match(/<svg\b[^>]*\bviewBox\s*=\s*["']([^"']+)["']/i);
+  const viewBox = String(viewBoxMatch?.[1] ?? "").trim() || "0 0 200 200";
+  const paths = [];
+  const pathRegex = /<path\b[^>]*\bd\s*=\s*(["'])(.*?)\1/gi;
+  let match = pathRegex.exec(String(rawSvg));
+  while (match) {
+    const d = String(match[2] ?? "").trim();
+    if (d) {
+      paths.push(d);
+    }
+    match = pathRegex.exec(String(rawSvg));
+  }
+  return { viewBox, paths };
+}
+
+async function loadRadicalSvgCache() {
+  if (!existsSync(radicalSvgCachePath)) {
+    return {};
+  }
+  const raw = await readFile(radicalSvgCachePath, "utf8");
+  const parsed = JSON.parse(raw.replace(/^\uFEFF/, ""));
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    return {};
+  }
+  return parsed;
+}
+
+async function saveRadicalSvgCache(cache) {
+  await writeUtf8IfChanged(radicalSvgCachePath, JSON.stringify(cache, null, 2) + "\n");
+}
+
+async function loadKanjivgCache() {
+  if (!existsSync(kanjiVgCachePath)) {
+    return {};
+  }
+  const raw = await readFile(kanjiVgCachePath, "utf8");
+  const parsed = JSON.parse(raw.replace(/^\uFEFF/, ""));
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    return {};
+  }
+  return parsed;
+}
+
+async function saveKanjivgCache(cache) {
+  await writeUtf8IfChanged(kanjiVgCachePath, JSON.stringify(cache, null, 2) + "\n");
+}
+
+function parseXmlAttributes(rawAttrs) {
+  const attrs = {};
+  const attrRegex = /([a-zA-Z_][\w:.-]*)\s*=\s*(["'])(.*?)\2/g;
+  let match = attrRegex.exec(String(rawAttrs ?? ""));
+  while (match) {
+    attrs[match[1]] = match[3];
+    match = attrRegex.exec(String(rawAttrs ?? ""));
+  }
+  return attrs;
+}
+
+function pushPathInMap(map, key, d) {
+  if (!key || !d) {
+    return;
+  }
+  if (!map[key]) {
+    map[key] = [];
+  }
+  map[key].push(d);
+}
+
+function parseKanjivgSvg(rawSvg) {
+  const source = String(rawSvg ?? "");
+  const viewBoxMatch = source.match(/<svg\b[^>]*\bviewBox\s*=\s*["']([^"']+)["']/i);
+  const viewBox = String(viewBoxMatch?.[1] ?? "").trim() || "0 0 109 109";
+  const byElement = {};
+  const byElementPosition = {};
+  const stack = [];
+
+  const tagRegex = /<\s*(\/?)\s*(g|path)\b([^>]*)>/gi;
+  let match = tagRegex.exec(source);
+  while (match) {
+    const isClosing = Boolean(match[1]);
+    const tagName = String(match[2] ?? "").toLowerCase();
+    const attrsRaw = String(match[3] ?? "");
+    const isSelfClosing = /\/\s*$/.test(attrsRaw);
+
+    if (tagName === "g") {
+      if (isClosing) {
+        if (stack.length > 0) {
+          stack.pop();
+        }
+        match = tagRegex.exec(source);
+        continue;
+      }
+
+      const attrs = parseXmlAttributes(attrsRaw);
+      stack.push({
+        element: String(attrs["kvg:element"] ?? attrs.element ?? "").trim(),
+        position: String(attrs["kvg:position"] ?? attrs.position ?? "").trim().toLowerCase()
+      });
+
+      if (isSelfClosing && stack.length > 0) {
+        stack.pop();
+      }
+
+      match = tagRegex.exec(source);
+      continue;
+    }
+
+    if (tagName === "path" && !isClosing) {
+      const attrs = parseXmlAttributes(attrsRaw);
+      const d = String(attrs.d ?? "").trim();
+      if (!d) {
+        match = tagRegex.exec(source);
+        continue;
+      }
+
+      const seenElement = new Set();
+      const seenElementPos = new Set();
+      for (const layer of stack) {
+        const element = String(layer.element ?? "").trim();
+        if (!element) {
+          continue;
+        }
+
+        if (!seenElement.has(element)) {
+          seenElement.add(element);
+          pushPathInMap(byElement, element, d);
+        }
+
+        const position = String(layer.position ?? "").trim().toLowerCase();
+        if (position) {
+          const key = `${element}|${position}`;
+          if (!seenElementPos.has(key)) {
+            seenElementPos.add(key);
+            pushPathInMap(byElementPosition, key, d);
+          }
+        }
+      }
+    }
+
+    match = tagRegex.exec(source);
+  }
+
+  return { viewBox, byElement, byElementPosition };
+}
+
+function codepointKanjivgFilename(char) {
+  const first = Array.from(String(char ?? "").trim())[0];
+  if (!first) {
+    return "";
+  }
+  return first.codePointAt(0).toString(16).toLowerCase().padStart(5, "0");
+}
+
+async function fetchKanjivgKanjiData(kanjiChar, cache) {
+  const cleanKanji = Array.from(String(kanjiChar ?? "").trim())[0] ?? "";
+  if (!cleanKanji) {
+    return null;
+  }
+
+  const cached = cache[cleanKanji];
+  if (cached && typeof cached === "object" && !Array.isArray(cached) && cached.byElement) {
+    return cached;
+  }
+
+  const filename = codepointKanjivgFilename(cleanKanji);
+  if (!filename) {
+    return null;
+  }
+
+  const url = `https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${filename}.svg`;
+  try {
+    const response = await fetch(url, { headers: { "accept": "image/svg+xml,text/plain,*/*" } });
+    if (!response.ok) {
+      console.warn(`[warn] KanjiVG ausente para '${cleanKanji}' (${filename}) [${response.status}].`);
+      return null;
+    }
+    const rawSvg = await response.text();
+    const parsed = parseKanjivgSvg(rawSvg);
+    const out = {
+      kanji: cleanKanji,
+      source: "kanjivg",
+      filename,
+      viewBox: parsed.viewBox,
+      byElement: parsed.byElement,
+      byElementPosition: parsed.byElementPosition
+    };
+    cache[cleanKanji] = out;
+    return out;
+  } catch (error) {
+    console.warn(`[warn] erro ao baixar KanjiVG para '${cleanKanji}' (${filename}): ${error.message}`);
+    return null;
+  }
+}
+
+const RADICAL_ELEMENT_ALIASES = {
+  "⺗": ["心"],
+  "忄": ["心"],
+  "⺘": ["手"],
+  "扌": ["手"],
+  "氵": ["水"],
+  "⺡": ["水"],
+  "艹": ["艸"],
+  "⻌": ["辵"]
+};
+
+function normalizeElementLabel(rawElement) {
+  const clean = String(rawElement ?? "").trim();
+  if (!clean) {
+    return "";
+  }
+
+  const glyphOnly = clean.match(/^u([0-9a-f]{4,6})$/i);
+  if (glyphOnly) {
+    try {
+      return String.fromCodePoint(Number.parseInt(glyphOnly[1], 16));
+    } catch {
+      return clean;
+    }
+  }
+
+  return Array.from(clean)[0] ?? clean;
+}
+
+function resolveElementCandidates(radicalId) {
+  const primary = normalizeElementLabel(radicalId);
+  if (!primary) {
+    return [];
+  }
+
+  const out = [primary];
+  const aliases = RADICAL_ELEMENT_ALIASES[primary] ?? [];
+  for (const alias of aliases) {
+    if (alias && !out.includes(alias)) {
+      out.push(alias);
+    }
+  }
+  return out;
+}
+
+function resolvePositionHint(radicalDef) {
+  return String(radicalDef?.position ?? radicalDef?.kanjiVgPosition ?? "").trim().toLowerCase();
+}
+
+function pickKanjivgVector(kanjiData, elementCandidates, positionHint) {
+  if (!kanjiData || !kanjiData.byElement) {
+    return null;
+  }
+
+  if (positionHint) {
+    for (const element of elementCandidates) {
+      const key = `${element}|${positionHint}`;
+      const paths = kanjiData.byElementPosition?.[key];
+      if (Array.isArray(paths) && paths.length > 0) {
+        return {
+          provider: "kanjivg",
+          element,
+          position: positionHint,
+          viewBox: kanjiData.viewBox,
+          paths
+        };
+      }
+    }
+  }
+
+  for (const element of elementCandidates) {
+    const paths = kanjiData.byElement?.[element];
+    if (Array.isArray(paths) && paths.length > 0) {
+      return {
+        provider: "kanjivg",
+        element,
+        position: "",
+        viewBox: kanjiData.viewBox,
+        paths
+      };
+    }
+  }
+
+  return null;
+}
+
+async function fetchRadicalVector(sourceSpec, cache) {
+  const parsedSource = parseGlyphSourceSpec(sourceSpec);
+  if (!parsedSource) {
+    return null;
+  }
+
+  for (const key of parsedSource.cacheKeys) {
+    const cached = cache[key];
+    if (cached && Array.isArray(cached.paths) && cached.paths.length > 0) {
+      return cached;
+    }
+  }
+
+  const glyphId = parsedSource.glyphId;
+  if (!glyphId) {
+    return null;
+  }
+
+  const url = `https://glyphwiki.org/glyph/${glyphId}.svg`;
+  try {
+    const response = await fetch(url, { headers: { "accept": "image/svg+xml,text/plain,*/*" } });
+    if (!response.ok) {
+      console.warn(`[warn] falha ao baixar SVG do radical '${String(sourceSpec ?? "")}' (${glyphId}) [${response.status}].`);
+      return null;
+    }
+    const rawSvg = await response.text();
+    const parsed = parseSvgPaths(rawSvg);
+    if (!Array.isArray(parsed.paths) || parsed.paths.length === 0) {
+      console.warn(`[warn] SVG do radical '${String(sourceSpec ?? "")}' (${glyphId}) sem paths utilitarias.`);
+      return null;
+    }
+
+    const out = {
+      glyphId,
+      source: parsedSource.sourceChar || String(sourceSpec ?? "").trim(),
+      viewBox: parsed.viewBox,
+      paths: parsed.paths
+    };
+    for (const key of parsedSource.cacheKeys) {
+      cache[key] = out;
+    }
+    return out;
+  } catch (error) {
+    console.warn(`[warn] erro ao baixar SVG do radical '${String(sourceSpec ?? "")}' (${glyphId}): ${error.message}`);
+    return null;
+  }
+}
+
+async function enrichKanjiSvgCatalog(rawCatalog, caches) {
+  const out = {};
+  const sourceCatalog = (rawCatalog && typeof rawCatalog === "object" && !Array.isArray(rawCatalog)) ? rawCatalog : {};
+  const radicalSvgCache = caches?.radicalSvgCache ?? {};
+  const kanjiVgCache = caches?.kanjiVgCache ?? {};
+
+  for (const [kanjiId, kanjiDef] of Object.entries(sourceCatalog)) {
+    if (!kanjiDef || typeof kanjiDef !== "object" || Array.isArray(kanjiDef)) {
+      continue;
+    }
+
+    const radicalsOut = {};
+    const rawRadicals = (kanjiDef.radicais && typeof kanjiDef.radicais === "object" && !Array.isArray(kanjiDef.radicais))
+      ? kanjiDef.radicais
+      : {};
+
+    for (const [radicalId, radicalDef] of Object.entries(rawRadicals)) {
+      const cleanId = String(radicalId ?? "").trim();
+      if (!cleanId) {
+        continue;
+      }
+
+      const normalizedRadicalDef = (radicalDef && typeof radicalDef === "object" && !Array.isArray(radicalDef))
+        ? radicalDef
+        : { position: "full" };
+      const item = { ...normalizedRadicalDef };
+      const kanjiVgData = await fetchKanjivgKanjiData(kanjiId, kanjiVgCache);
+      const elementCandidates = resolveElementCandidates(cleanId);
+      const positionHint = resolvePositionHint(normalizedRadicalDef);
+      const kvgVector = pickKanjivgVector(kanjiVgData, elementCandidates, positionHint);
+
+      if (kvgVector) {
+        item.svgPaths = kvgVector.paths;
+        item.svgViewBox = kvgVector.viewBox;
+        item.svgGlyphId = `kanjivg:${kanjiVgData.filename}`;
+        item.svgSource = kvgVector.element;
+        item.svgSourceRequested = elementCandidates[0] ?? cleanId;
+        item.svgProvider = "kanjivg";
+        if (kvgVector.position) {
+          item.svgPositionMatched = kvgVector.position;
+        }
+      } else {
+        const sourceSpec = String(radicalDef.source ?? cleanId).trim();
+        const vector = await fetchRadicalVector(sourceSpec, radicalSvgCache);
+        if (vector) {
+          item.svgPaths = vector.paths;
+          item.svgViewBox = vector.viewBox;
+          item.svgGlyphId = vector.glyphId;
+          item.svgSource = vector.source;
+          item.svgSourceRequested = sourceSpec;
+          item.svgProvider = "glyphwiki";
+        }
+      }
+      radicalsOut[cleanId] = item;
+    }
+
+    out[kanjiId] = {
+      ...kanjiDef,
+      viewBox: String(kanjiDef.viewBox ?? "").trim() || "0 0 120 120",
+      radicais: radicalsOut
+    };
+  }
+
+  return out;
+}
+
+function buildKanjiSvgCatalogFromData(jsonData) {
+  const merged = {};
+
+  const fromKanjiCatalog = jsonData?.kanjiCatalog ?? {};
+  if (fromKanjiCatalog && typeof fromKanjiCatalog === "object" && !Array.isArray(fromKanjiCatalog)) {
+    for (const [kanjiId, kanjiInfo] of Object.entries(fromKanjiCatalog)) {
+      if (!kanjiInfo || typeof kanjiInfo !== "object" || Array.isArray(kanjiInfo)) {
+        continue;
+      }
+      const radicaisRaw = kanjiInfo.radicais;
+      const radicais = (radicaisRaw && typeof radicaisRaw === "object" && !Array.isArray(radicaisRaw))
+        ? radicaisRaw
+        : { [kanjiId]: { position: "full" } };
+      merged[kanjiId] = {
+        viewBox: kanjiInfo.viewBox,
+        radicais
+      };
+    }
+  }
+
+  const legacy = jsonData?.kanjiSvgCatalog ?? jsonData?.kanji_svg_catalog ?? {};
+  if (legacy && typeof legacy === "object" && !Array.isArray(legacy)) {
+    for (const [kanjiId, svg] of Object.entries(legacy)) {
+      if (!merged[kanjiId] && svg && typeof svg === "object" && !Array.isArray(svg)) {
+        merged[kanjiId] = svg;
+      }
+    }
+  }
+
+  return merged;
 }
 
 function getKanjiPatterns(kanjiCatalog) {
@@ -413,6 +893,125 @@ function renderKanjiSet(setIdsCsv, kanjiSets, kanjiCatalog) {
   return lines.join("\n");
 }
 
+function slotIdFromText(prefix, text) {
+  const codepoints = Array.from(String(text ?? ""))
+    .map((char) => char.codePointAt(0).toString(16))
+    .join("-");
+  return `${prefix}-${codepoints || "x"}`;
+}
+
+function normalizeRadicalDict(rawRadicals) {
+  if (!rawRadicals || typeof rawRadicals !== "object" || Array.isArray(rawRadicals)) {
+    return {};
+  }
+
+  const out = {};
+  for (const [radicalId, rawData] of Object.entries(rawRadicals)) {
+    if (!radicalId) {
+      continue;
+    }
+
+    const value = {};
+    if (rawData && typeof rawData === "object" && !Array.isArray(rawData)) {
+      const colorCode = String(rawData.colorCode ?? "").trim();
+      const significado = String(rawData.significado ?? "").trim();
+      if (colorCode) {
+        value.colorCode = colorCode;
+      }
+      if (significado) {
+        value.significado = significado;
+      }
+    }
+
+    out[radicalId] = value;
+  }
+
+  return out;
+}
+
+function parseKanjiPairId(rawPairId) {
+  const parts = String(rawPairId ?? "").split("|").map((item) => item.trim());
+  if (parts.length !== 2 || !parts[0] || !parts[1]) {
+    return null;
+  }
+  return { leftKanji: parts[0], rightKanji: parts[1] };
+}
+
+function renderVerbeteComponent(kanjiId, verbeteKanji, kanjiSvgCatalog, kanjiCatalog) {
+  const cleanId = String(kanjiId ?? "").trim();
+  const slotId = slotIdFromText("verbete", cleanId);
+  const radicals = normalizeRadicalDict(verbeteKanji?.[cleanId]);
+  const svg = kanjiSvgCatalog?.[cleanId] ?? null;
+  const meaning = String(kanjiCatalog?.[cleanId]?.significado ?? "").trim();
+
+  const slot = {
+    id: slotId,
+    kanjiId: cleanId,
+    meaning,
+    radicals,
+    svg,
+    valid: Boolean(cleanId && svg)
+  };
+
+  if (!cleanId) {
+    slot.reason = "Verbete sem kanji id.";
+  } else if (!svg) {
+    slot.reason = `SVG nao encontrado para '${cleanId}'.`;
+    console.warn(`[missing] SVG do kanji '${cleanId}' nao encontrado em kanjiSvgCatalog.`);
+  }
+
+  return {
+    html: `[[kanji-verbete:${slotId}]]`,
+    slot
+  };
+}
+
+function renderComparacaoComponent(pairId, comparacaoKanji, kanjiSvgCatalog, kanjiCatalog) {
+  const cleanId = String(pairId ?? "").trim();
+  const slotId = slotIdFromText("comparacao", cleanId);
+  const pair = parseKanjiPairId(cleanId);
+  const radicals = normalizeRadicalDict(comparacaoKanji?.[cleanId]);
+  const leftKanji = pair?.leftKanji ?? "";
+  const rightKanji = pair?.rightKanji ?? "";
+  const leftMeaning = String(kanjiCatalog?.[leftKanji]?.significado ?? "").trim();
+  const rightMeaning = String(kanjiCatalog?.[rightKanji]?.significado ?? "").trim();
+  const leftSvg = leftKanji ? (kanjiSvgCatalog?.[leftKanji] ?? null) : null;
+  const rightSvg = rightKanji ? (kanjiSvgCatalog?.[rightKanji] ?? null) : null;
+
+  const slot = {
+    id: slotId,
+    pairId: cleanId,
+    leftKanji,
+    rightKanji,
+    leftMeaning,
+    rightMeaning,
+    radicals,
+    leftSvg,
+    rightSvg,
+    valid: Boolean(pair && leftSvg && rightSvg)
+  };
+
+  if (!pair) {
+    slot.reason = `ID de comparacao invalido '${cleanId}'. Use o formato 'KANJI|KANJI'.`;
+    console.warn(`[invalid] comparacao '${cleanId}' invalida. Use o formato 'KANJI|KANJI'.`);
+  } else {
+    if (!leftSvg) {
+      console.warn(`[missing] SVG do kanji '${leftKanji}' nao encontrado em kanjiSvgCatalog.`);
+    }
+    if (!rightSvg) {
+      console.warn(`[missing] SVG do kanji '${rightKanji}' nao encontrado em kanjiSvgCatalog.`);
+    }
+    if (!leftSvg || !rightSvg) {
+      slot.reason = `SVG ausente para comparacao '${cleanId}'.`;
+    }
+  }
+
+  return {
+    html: `[[kanji-comparacao:${slotId}]]`,
+    slot
+  };
+}
+
 function encodeCards(entries, kanjiPatterns) {
   const cards = entries.map((entry) => ({
     furigana: linkKanjiInHtml(entry.japaneseDisplay, kanjiPatterns),
@@ -528,7 +1127,7 @@ async function exportDecks(pythonPath, deckPayloads) {
   }
 }
 
-function registerHelpers(data, deckPayloads, embedSlots, tableSlots) {
+function registerHelpers(data, deckPayloads, embedSlots, tableSlots, verbeteSlots, comparacaoSlots) {
   const kanjiPatterns = getKanjiPatterns(data.kanjiCatalog);
 
   Handlebars.registerHelper("Vocab", (glossaryIdsCsv) => {
@@ -591,6 +1190,29 @@ function registerHelpers(data, deckPayloads, embedSlots, tableSlots) {
   Handlebars.registerHelper("Kanji", (setIdsCsv) => {
     return new Handlebars.SafeString(renderKanjiSet(setIdsCsv, data.kanjiSets, data.kanjiCatalog));
   });
+
+  Handlebars.registerHelper("Verbete", (kanjiId) => {
+    if (typeof kanjiId !== "string") {
+      throw new Error("Verbete exige kanji id string: {{{Verbete \"悪\"}}}");
+    }
+    const rendered = renderVerbeteComponent(kanjiId, data.verbeteKanji, data.kanjiSvgCatalog, data.kanjiCatalog);
+    verbeteSlots.set(rendered.slot.id, rendered.slot);
+    return new Handlebars.SafeString(rendered.html);
+  });
+
+  Handlebars.registerHelper("Comparacao", (pairId) => {
+    if (typeof pairId !== "string") {
+      throw new Error("Comparacao exige id no formato KANJI|KANJI: {{{Comparacao \"塊|魂\"}}}");
+    }
+    const rendered = renderComparacaoComponent(
+      pairId,
+      data.comparacaoKanji,
+      data.kanjiSvgCatalog,
+      data.kanjiCatalog
+    );
+    comparacaoSlots.set(rendered.slot.id, rendered.slot);
+    return new Handlebars.SafeString(rendered.html);
+  });
 }
 
 const [rawData, rawTemplate] = await Promise.all([
@@ -600,29 +1222,45 @@ const [rawData, rawTemplate] = await Promise.all([
 
 const jsonData = JSON.parse(rawData.replace(/^\uFEFF/, ""));
 const templateSource = rawTemplate.replace(/^\uFEFF/, "");
+const baseKanjiSvgCatalog = buildKanjiSvgCatalogFromData(jsonData);
+const radicalSvgCache = await loadRadicalSvgCache();
+const kanjiVgCache = await loadKanjivgCache();
+const kanjiSvgCatalog = await enrichKanjiSvgCatalog(baseKanjiSvgCatalog, {
+  radicalSvgCache,
+  kanjiVgCache
+});
+await saveRadicalSvgCache(radicalSvgCache);
+await saveKanjivgCache(kanjiVgCache);
 const normalized = {
   ...jsonData,
   vocabIndex: normalizeVocab(jsonData.vocabSource),
   glossaries: jsonData.glossaries ?? {},
   kanjiCatalog: jsonData.kanjiCatalog ?? {},
-  kanjiSets: jsonData.kanjiSets ?? {}
+  kanjiSets: jsonData.kanjiSets ?? {},
+  verbeteKanji: jsonData.verbete_kanji ?? {},
+  comparacaoKanji: jsonData.comparacao_kanji ?? {},
+  kanjiSvgCatalog
 };
 
 const embedRequests = parseEmbedRequests(templateSource);
-const pythonPath = ensurePythonReady(embedRequests.length);
+const pythonPath = skipDecks ? null : ensurePythonReady(embedRequests.length);
 const decksToBuild = { local: new Map(), global: new Map() };
 const embedSlots = new Map();
 const tableSlots = new Map();
-registerHelpers(normalized, decksToBuild, embedSlots, tableSlots);
+const verbeteSlots = new Map();
+const comparacaoSlots = new Map();
+registerHelpers(normalized, decksToBuild, embedSlots, tableSlots, verbeteSlots, comparacaoSlots);
 
 const template = Handlebars.compile(templateSource, { noEscape: true });
 const rendered = template(normalized).trimEnd() + "\n";
 
-await writeFile(outputPath, rendered, "utf8");
-await writeFile(embedsManifestPath, JSON.stringify({
+await writeUtf8IfChanged(outputPath, rendered);
+await writeUtf8IfChanged(embedsManifestPath, JSON.stringify({
   embeds: Object.fromEntries(embedSlots),
-  tables: Object.fromEntries(tableSlots)
-}, null, 2) + "\n", "utf8");
+  tables: Object.fromEntries(tableSlots),
+  verbetes: Object.fromEntries(verbeteSlots),
+  comparacoes: Object.fromEntries(comparacaoSlots)
+}, null, 2) + "\n");
 await exportDecks(pythonPath, decksToBuild);
 
 console.log(`README generated from ${path.relative(rootDir, dataPath)} using ${path.relative(rootDir, templatePath)}.`);
@@ -631,6 +1269,10 @@ const generatedDeckFiles = [
   ...Array.from(decksToBuild.local.keys())
 ];
 if (generatedDeckFiles.length > 0) {
-  console.log(`Decks generated: ${generatedDeckFiles.join(", ")}`);
+  if (skipDecks) {
+    console.log("Deck export skipped (BUILD_DOCS_SKIP_DECKS=1).");
+  } else {
+    console.log(`Decks generated: ${generatedDeckFiles.join(", ")}`);
+  }
 }
 

@@ -9,6 +9,10 @@
       "portuguese": "boca"
     },
     {
+      "japanese": "土(つち)",
+      "portuguese": "chão"
+    },
+    {
       "japanese": "欲(ほ)しい",
       "portuguese": "quero"
     },
@@ -39,7 +43,7 @@
     }
   ],
   "glossaries": {
-    "cap1-basic-1": ["人", "口", "欲しい"],
+    "cap1-basic-1": ["人", "口", "土", "欲しい"],
     "cap1-basic-2": ["入り口", "人間", "入間くん"],
     "cap1-katamari-damacy": ["塊", "魂"]
   },
@@ -67,10 +71,37 @@
     },
     "悪": {
       "significado": "mau",
-      "onyomi": ["あく"]
+      "onyomi": ["あく"],
+      "radicais": {
+        "亜": {
+          "position": "top"
+        },
+        "心": {
+          "position": "bottom"
+        }
+      }
+    },
+    "塊": {
+      "significado": "amontoado, amalgama",
+      "radicais": {
+        "土": {
+          "position": "left"
+        },
+        "鬼": {
+          "position": "right"
+        }
+      }
     },
     "魂": {
-      "significado": "alma"
+      "significado": "alma",
+      "radicais": {
+        "云": {
+          "position": "left"
+        },
+        "鬼": {
+          "position": "right"
+        }
+      }
     },
     "口": {
       "significado": "boca"
@@ -81,5 +112,30 @@
   },
   "kanjiSets": {
     "cap1-main": ["人", "入", "学", "生", "校", "欲", "悪", "魂", "口", "間"]
+  },
+  "verbete_kanji": {
+    "悪": {
+      "心": {
+        "colorCode": "pink-500",
+        "significado": "coração"
+      }
+    }
+  },
+  "comparacao_kanji": {
+    "塊|魂": {
+      "鬼": {
+        "colorCode": "blue-500",
+        "significado": "oni"
+      },
+      "土": {
+        "colorCode": "amber-500",
+        "significado": "chão"
+      },
+      "云": {
+        "colorCode": "pink-500",
+        "significado": "nuvem"
+      }
+    },
+    "人|入": {}
   }
 }

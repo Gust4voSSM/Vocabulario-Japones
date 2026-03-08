@@ -2,14 +2,14 @@
   "embeds": {
     "embed-iruma-cap1-cap1-basic-1-cap1-basic-2": {
       "id": "embed-iruma-cap1-cap1-basic-1-cap1-basic-2",
-      "cardsB64": "W3siZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3kurpcIj7kuro8L2E+PHJ0PuOBsuOBqDwvcnQ+PC9ydWJ5PiIsInJvbWFqaSI6ImhpdG8iLCJtZWFuaW5nIjoicGVzc29hIiwiamFwb25lcyI6IuS6uijjgbLjgagpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoicGVzc29hIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWPo1wiPuWPozwvYT48cnQ+44GP44GhPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoia3VjaGkiLCJtZWFuaW5nIjoiYm9jYSIsImphcG9uZXMiOiLlj6Mo44GP44GhKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6ImJvY2EifSx7ImZ1cmlnYW5hIjoiPHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ95qyyXCI+5qyyPC9hPjxydD7jgbs8L3J0PjwvcnVieT7jgZfjgYQiLCJyb21hamkiOiJob3NoaWkiLCJtZWFuaW5nIjoicXVlcm8iLCJqYXBvbmVzIjoi5qyyKOOBuynjgZfjgYQiLCJyb21hamlSYXciOiIiLCJwb3J0dWd1ZXMiOiJxdWVybyJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3lhaVcIj7lhaU8L2E+PHJ0PuOBhDwvcnQ+PC9ydWJ5PuOCijxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWPo1wiPuWPozwvYT48cnQ+44GQ44GhPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoiaXJpZ3VjaGkiLCJtZWFuaW5nIjoiZW50cmFkYSIsImphcG9uZXMiOiLlhaUo44GEKeOCiuWPoyjjgZDjgaEpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoiZW50cmFkYSJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3kurpcIj7kuro8L2E+PHJ0PuOBq+OCkzwvcnQ+PC9ydWJ5PjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPemWk1wiPumWkzwvYT48cnQ+44GS44KTPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoibmluZ2VuIiwibWVhbmluZyI6Imh1bWFubyIsImphcG9uZXMiOiLkuroo44Gr44KTKemWkyjjgZLjgpMpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoiaHVtYW5vIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWFpVwiPuWFpTwvYT48cnQ+44GE44KLPC9ydD48L3J1Ynk+PHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ96ZaTXCI+6ZaTPC9hPjxydD7jgb48L3J0PjwvcnVieT7jgY/jgpMiLCJyb21hamkiOiJJcnVtYS1rdW4iLCJtZWFuaW5nIjoiSXJ1bWEiLCJqYXBvbmVzIjoi5YWlKOOBhOOCiynplpMo44G+KeOBj+OCkyIsInJvbWFqaVJhdyI6IklydW1hLWt1biIsInBvcnR1Z3VlcyI6IklydW1hIn1d",
+      "cardsB64": "W3siZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3kurpcIj7kuro8L2E+PHJ0PuOBsuOBqDwvcnQ+PC9ydWJ5PiIsInJvbWFqaSI6ImhpdG8iLCJtZWFuaW5nIjoicGVzc29hIiwiamFwb25lcyI6IuS6uijjgbLjgagpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoicGVzc29hIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWPo1wiPuWPozwvYT48cnQ+44GP44GhPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoia3VjaGkiLCJtZWFuaW5nIjoiYm9jYSIsImphcG9uZXMiOiLlj6Mo44GP44GhKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6ImJvY2EifSx7ImZ1cmlnYW5hIjoiPHJ1Ynk+5ZyfPHJ0PuOBpOOBoTwvcnQ+PC9ydWJ5PiIsInJvbWFqaSI6InRzdWNoaSIsIm1lYW5pbmciOiJjaMOjbyIsImphcG9uZXMiOiLlnJ8o44Gk44GhKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6ImNow6NvIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeasslwiPuassjwvYT48cnQ+44G7PC9ydD48L3J1Ynk+44GX44GEIiwicm9tYWppIjoiaG9zaGlpIiwibWVhbmluZyI6InF1ZXJvIiwiamFwb25lcyI6Iuassijjgbsp44GX44GEIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoicXVlcm8ifSx7ImZ1cmlnYW5hIjoiPHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ95YWlXCI+5YWlPC9hPjxydD7jgYQ8L3J0PjwvcnVieT7jgoo8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3lj6NcIj7lj6M8L2E+PHJ0PuOBkOOBoTwvcnQ+PC9ydWJ5PiIsInJvbWFqaSI6ImlyaWd1Y2hpIiwibWVhbmluZyI6ImVudHJhZGEiLCJqYXBvbmVzIjoi5YWlKOOBhCnjgorlj6Mo44GQ44GhKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6ImVudHJhZGEifSx7ImZ1cmlnYW5hIjoiPHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ95Lq6XCI+5Lq6PC9hPjxydD7jgavjgpM8L3J0PjwvcnVieT48cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3plpNcIj7plpM8L2E+PHJ0PuOBkuOCkzwvcnQ+PC9ydWJ5PiIsInJvbWFqaSI6Im5pbmdlbiIsIm1lYW5pbmciOiJodW1hbm8iLCJqYXBvbmVzIjoi5Lq6KOOBq+OCkynplpMo44GS44KTKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6Imh1bWFubyJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3lhaVcIj7lhaU8L2E+PHJ0PuOBhOOCizwvcnQ+PC9ydWJ5PjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPemWk1wiPumWkzwvYT48cnQ+44G+PC9ydD48L3J1Ynk+44GP44KTIiwicm9tYWppIjoiSXJ1bWEta3VuIiwibWVhbmluZyI6IklydW1hIiwiamFwb25lcyI6IuWFpSjjgYTjgosp6ZaTKOOBvinjgY/jgpMiLCJyb21hamlSYXciOiJJcnVtYS1rdW4iLCJwb3J0dWd1ZXMiOiJJcnVtYSJ9XQ==",
       "globalDeckHref": "decks/iruma-cap1.apkg",
       "localDeckHref": "decks/iruma-cap1__cap1-basic-1-cap1-basic-2.apkg",
       "firstPassNoShuffle": true
     },
     "embed-iruma-cap1-cap1-katamari-damacy-cap1-basic-1-cap1-basic-2": {
       "id": "embed-iruma-cap1-cap1-katamari-damacy-cap1-basic-1-cap1-basic-2",
-      "cardsB64": "W3siZnVyaWdhbmEiOiI8cnVieT7loYo8cnQ+44GL44Gf44G+44KKPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoia2F0YW1hcmkiLCJtZWFuaW5nIjoiYW1vbnRvYWRvLCBhbWFsZ2FtYSIsImphcG9uZXMiOiLloYoo44GL44Gf44G+44KKKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6ImFtb250b2FkbywgYW1hbGdhbWEifSx7ImZ1cmlnYW5hIjoiPHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ96a2CXCI+6a2CPC9hPjxydD7jgZ/jgb7jgZfjgYQ8L3J0PjwvcnVieT4iLCJyb21hamkiOiJ0YW1hc2hpaSIsIm1lYW5pbmciOiJhbG1hIiwiamFwb25lcyI6IumtgijjgZ/jgb7jgZfjgYQpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoiYWxtYSJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3kurpcIj7kuro8L2E+PHJ0PuOBsuOBqDwvcnQ+PC9ydWJ5PiIsInJvbWFqaSI6ImhpdG8iLCJtZWFuaW5nIjoicGVzc29hIiwiamFwb25lcyI6IuS6uijjgbLjgagpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoicGVzc29hIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWPo1wiPuWPozwvYT48cnQ+44GP44GhPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoia3VjaGkiLCJtZWFuaW5nIjoiYm9jYSIsImphcG9uZXMiOiLlj6Mo44GP44GhKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6ImJvY2EifSx7ImZ1cmlnYW5hIjoiPHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ95qyyXCI+5qyyPC9hPjxydD7jgbs8L3J0PjwvcnVieT7jgZfjgYQiLCJyb21hamkiOiJob3NoaWkiLCJtZWFuaW5nIjoicXVlcm8iLCJqYXBvbmVzIjoi5qyyKOOBuynjgZfjgYQiLCJyb21hamlSYXciOiIiLCJwb3J0dWd1ZXMiOiJxdWVybyJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3lhaVcIj7lhaU8L2E+PHJ0PuOBhDwvcnQ+PC9ydWJ5PuOCijxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWPo1wiPuWPozwvYT48cnQ+44GQ44GhPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoiaXJpZ3VjaGkiLCJtZWFuaW5nIjoiZW50cmFkYSIsImphcG9uZXMiOiLlhaUo44GEKeOCiuWPoyjjgZDjgaEpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoiZW50cmFkYSJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3kurpcIj7kuro8L2E+PHJ0PuOBq+OCkzwvcnQ+PC9ydWJ5PjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPemWk1wiPumWkzwvYT48cnQ+44GS44KTPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoibmluZ2VuIiwibWVhbmluZyI6Imh1bWFubyIsImphcG9uZXMiOiLkuroo44Gr44KTKemWkyjjgZLjgpMpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoiaHVtYW5vIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWFpVwiPuWFpTwvYT48cnQ+44GE44KLPC9ydD48L3J1Ynk+PHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ96ZaTXCI+6ZaTPC9hPjxydD7jgb48L3J0PjwvcnVieT7jgY/jgpMiLCJyb21hamkiOiJJcnVtYS1rdW4iLCJtZWFuaW5nIjoiSXJ1bWEiLCJqYXBvbmVzIjoi5YWlKOOBhOOCiynplpMo44G+KeOBj+OCkyIsInJvbWFqaVJhdyI6IklydW1hLWt1biIsInBvcnR1Z3VlcyI6IklydW1hIn1d",
+      "cardsB64": "W3siZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3loYpcIj7loYo8L2E+PHJ0PuOBi+OBn+OBvuOCijwvcnQ+PC9ydWJ5PiIsInJvbWFqaSI6ImthdGFtYXJpIiwibWVhbmluZyI6ImFtb250b2FkbywgYW1hbGdhbWEiLCJqYXBvbmVzIjoi5aGKKOOBi+OBn+OBvuOCiikiLCJyb21hamlSYXciOiIiLCJwb3J0dWd1ZXMiOiJhbW9udG9hZG8sIGFtYWxnYW1hIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPemtglwiPumtgjwvYT48cnQ+44Gf44G+44GX44GEPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoidGFtYXNoaWkiLCJtZWFuaW5nIjoiYWxtYSIsImphcG9uZXMiOiLprYIo44Gf44G+44GX44GEKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6ImFsbWEifSx7ImZ1cmlnYW5hIjoiPHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ95Lq6XCI+5Lq6PC9hPjxydD7jgbLjgag8L3J0PjwvcnVieT4iLCJyb21hamkiOiJoaXRvIiwibWVhbmluZyI6InBlc3NvYSIsImphcG9uZXMiOiLkuroo44Gy44GoKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6InBlc3NvYSJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3lj6NcIj7lj6M8L2E+PHJ0PuOBj+OBoTwvcnQ+PC9ydWJ5PiIsInJvbWFqaSI6Imt1Y2hpIiwibWVhbmluZyI6ImJvY2EiLCJqYXBvbmVzIjoi5Y+jKOOBj+OBoSkiLCJyb21hamlSYXciOiIiLCJwb3J0dWd1ZXMiOiJib2NhIn0seyJmdXJpZ2FuYSI6IjxydWJ5PuWcnzxydD7jgaTjgaE8L3J0PjwvcnVieT4iLCJyb21hamkiOiJ0c3VjaGkiLCJtZWFuaW5nIjoiY2jDo28iLCJqYXBvbmVzIjoi5ZyfKOOBpOOBoSkiLCJyb21hamlSYXciOiIiLCJwb3J0dWd1ZXMiOiJjaMOjbyJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3mrLJcIj7mrLI8L2E+PHJ0PuOBuzwvcnQ+PC9ydWJ5PuOBl+OBhCIsInJvbWFqaSI6Imhvc2hpaSIsIm1lYW5pbmciOiJxdWVybyIsImphcG9uZXMiOiLmrLIo44G7KeOBl+OBhCIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6InF1ZXJvIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWFpVwiPuWFpTwvYT48cnQ+44GEPC9ydD48L3J1Ynk+44KKPHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ95Y+jXCI+5Y+jPC9hPjxydD7jgZDjgaE8L3J0PjwvcnVieT4iLCJyb21hamkiOiJpcmlndWNoaSIsIm1lYW5pbmciOiJlbnRyYWRhIiwiamFwb25lcyI6IuWFpSjjgYQp44KK5Y+jKOOBkOOBoSkiLCJyb21hamlSYXciOiIiLCJwb3J0dWd1ZXMiOiJlbnRyYWRhIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeS6ulwiPuS6ujwvYT48cnQ+44Gr44KTPC9ydD48L3J1Ynk+PHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ96ZaTXCI+6ZaTPC9hPjxydD7jgZLjgpM8L3J0PjwvcnVieT4iLCJyb21hamkiOiJuaW5nZW4iLCJtZWFuaW5nIjoiaHVtYW5vIiwiamFwb25lcyI6IuS6uijjgavjgpMp6ZaTKOOBkuOCkykiLCJyb21hamlSYXciOiIiLCJwb3J0dWd1ZXMiOiJodW1hbm8ifSx7ImZ1cmlnYW5hIjoiPHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ95YWlXCI+5YWlPC9hPjxydD7jgYTjgos8L3J0PjwvcnVieT48cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3plpNcIj7plpM8L2E+PHJ0PuOBvjwvcnQ+PC9ydWJ5PuOBj+OCkyIsInJvbWFqaSI6IklydW1hLWt1biIsIm1lYW5pbmciOiJJcnVtYSIsImphcG9uZXMiOiLlhaUo44GE44KLKemWkyjjgb4p44GP44KTIiwicm9tYWppUmF3IjoiSXJ1bWEta3VuIiwicG9ydHVndWVzIjoiSXJ1bWEifV0=",
       "globalDeckHref": "decks/iruma-cap1.apkg",
       "localDeckHref": "decks/iruma-cap1__cap1-katamari-damacy-cap1-basic-1-cap1-basic-2.apkg",
       "firstPassNoShuffle": true
@@ -28,6 +28,11 @@
           "japanese": "<ruby><a class=\"kanji-ref\" href=\"#/?id=口\">口</a><rt>くち</rt></ruby>",
           "romaji": "kuchi",
           "portuguese": "boca"
+        },
+        {
+          "japanese": "<ruby>土<rt>つち</rt></ruby>",
+          "romaji": "tsuchi",
+          "portuguese": "chão"
         },
         {
           "japanese": "<ruby><a class=\"kanji-ref\" href=\"#/?id=欲\">欲</a><rt>ほ</rt></ruby>しい",
@@ -50,6 +55,208 @@
           "portuguese": "Iruma"
         }
       ]
+    }
+  },
+  "verbetes": {
+    "verbete-60aa": {
+      "id": "verbete-60aa",
+      "kanjiId": "悪",
+      "meaning": "mau",
+      "radicals": {
+        "心": {
+          "colorCode": "pink-500",
+          "significado": "coração"
+        }
+      },
+      "svg": {
+        "viewBox": "0 0 120 120",
+        "radicais": {
+          "亜": {
+            "position": "top",
+            "svgPaths": [
+              "M27.02,20.14c1.67,0.22,4.72,0.36,6.38,0.17C45.38,19,61.62,17,74.43,16.12c2.76-0.19,4.44,0.07,5.82,0.18",
+              "M27.44,34.62c1.06,0.51,1.86,1.44,2.06,2.2c1.12,4.18,1.51,7.44,2.3,11.64c0.2,1.07,0.39,2.05,0.55,2.88",
+              "M30.5,35.72c13.08-1.76,42.28-5.05,46.21-5.05c2.67,0,4.17,1.45,3.54,4.58c-0.61,3.03-1.06,4.82-1.95,9.01c-0.17,0.81-0.36,1.72-0.57,2.73",
+              "M33.37,49.41c11-1.28,28.75-3.16,43.96-4.13",
+              "M43.52,21.44c0.83,0.83,1.48,2.06,1.51,3.07c0.15,5.51,1.4,32.37,1.22,36.74",
+              "M62,19.31c0.84,0.84,1.03,2.06,1,2.94c-0.25,6-1.71,33.68-1.87,37.74",
+              "M23,64.05c2.08,0.33,4.38,0.36,8,0.01C47,62.5,66.62,60,80.25,59.7c3.47-0.08,5.5,0.05,7.55,0.5"
+            ],
+            "svgViewBox": "0 0 109 109",
+            "svgGlyphId": "kanjivg:060aa",
+            "svgSource": "亜",
+            "svgSourceRequested": "亜",
+            "svgProvider": "kanjivg",
+            "svgPositionMatched": "top"
+          },
+          "心": {
+            "position": "bottom",
+            "svgPaths": [
+              "M24,77c0.29,2.19-2.91,11.85-5.25,15.5",
+              "M35,70.5c8.75,14.45,19.5,25.75,47.3,24.35c9.58-0.48,8.45-3.6-0.55-8.85",
+              "M55.49,69.75c1.82,3.17,6.58,9.74,7.72,5.27",
+              "M82.5,68.5c4,2.2,8.88,6.5,12,12"
+            ],
+            "svgViewBox": "0 0 109 109",
+            "svgGlyphId": "kanjivg:060aa",
+            "svgSource": "心",
+            "svgSourceRequested": "心",
+            "svgProvider": "kanjivg",
+            "svgPositionMatched": "bottom"
+          }
+        }
+      },
+      "valid": true
+    }
+  },
+  "comparacoes": {
+    "comparacao-4eba-7c-5165": {
+      "id": "comparacao-4eba-7c-5165",
+      "pairId": "人|入",
+      "leftKanji": "人",
+      "rightKanji": "入",
+      "leftMeaning": "pessoa",
+      "rightMeaning": "entrar",
+      "radicals": {},
+      "leftSvg": {
+        "viewBox": "0 0 120 120",
+        "radicais": {
+          "人": {
+            "position": "full",
+            "svgPaths": [
+              "M54.5,20c0.37,2.12,0.23,4.03-0.22,6.27C51.68,39.48,38.25,72.25,16.5,87.25",
+              "M46,54.25c6.12,6,25.51,22.24,35.52,29.72c3.66,2.73,6.94,4.64,11.48,5.53"
+            ],
+            "svgViewBox": "0 0 109 109",
+            "svgGlyphId": "kanjivg:04eba",
+            "svgSource": "人",
+            "svgSourceRequested": "人",
+            "svgProvider": "kanjivg"
+          }
+        }
+      },
+      "rightSvg": {
+        "viewBox": "0 0 120 120",
+        "radicais": {
+          "入": {
+            "position": "full",
+            "svgPaths": [
+              "M54.75,48.75c-0.5,2-1.1,3.2-2.07,4.62C44.22,65.8,27.98,81.44,14.5,88",
+              "M36.5,20c8.25,1.38,15.12,34,48.81,62.08c2.71,2.26,5.56,4.8,9.44,6.42"
+            ],
+            "svgViewBox": "0 0 109 109",
+            "svgGlyphId": "kanjivg:05165",
+            "svgSource": "入",
+            "svgSourceRequested": "入",
+            "svgProvider": "kanjivg"
+          }
+        }
+      },
+      "valid": true
+    },
+    "comparacao-584a-7c-9b42": {
+      "id": "comparacao-584a-7c-9b42",
+      "pairId": "塊|魂",
+      "leftKanji": "塊",
+      "rightKanji": "魂",
+      "leftMeaning": "amontoado, amalgama",
+      "rightMeaning": "alma",
+      "radicals": {
+        "鬼": {
+          "colorCode": "blue-500",
+          "significado": "oni"
+        },
+        "土": {
+          "colorCode": "amber-500",
+          "significado": "chão"
+        },
+        "云": {
+          "colorCode": "pink-500",
+          "significado": "nuvem"
+        }
+      },
+      "leftSvg": {
+        "viewBox": "0 0 120 120",
+        "radicais": {
+          "土": {
+            "position": "left",
+            "svgPaths": [
+              "M13.5,43.64c1.33,0.67,3.7,0.53,5.13,0.25C23.63,42.93,31,41.25,35.75,40c1.22-0.32,2.37-0.43,3-0.24",
+              "M27.12,19.75c1.13,1.13,1.21,2.25,1.21,4c0,7.25,0.03,33.75,0.03,44.5",
+              "M14.75,77c1,1.12,2.62,1.12,4.06,0.02c5.76-4.42,15.8-12.21,21.44-16.77"
+            ],
+            "svgViewBox": "0 0 109 109",
+            "svgGlyphId": "kanjivg:0584a",
+            "svgSource": "土",
+            "svgSourceRequested": "土",
+            "svgProvider": "kanjivg",
+            "svgPositionMatched": "left"
+          },
+          "鬼": {
+            "position": "right",
+            "svgPaths": [
+              "M61.61,12.25c0.08,1.09,0.01,1.73-0.54,2.7c-2.45,4.3-3.96,6.34-8.57,11.3",
+              "M43.08,28.37c0.71,0.71,1.17,1.88,1.48,3.62c1.16,6.62,2.04,13.59,2.73,21.74c0.12,1.38,0.22,2.75,0.32,4.09",
+              "M44.84,29.45c11.16-1.7,27.12-4.49,34.19-5.03c2.6-0.2,4.41,2.08,4.13,4.37c-0.56,4.64-1.39,11.27-3.2,20.94c-0.29,1.55-0.61,3.18-0.95,4.9",
+              "M61.61,28.92c0.98,0.98,1.27,1.9,1.29,3.58c0.08,5.24-0.02,13.75,0.01,20.24",
+              "M47.28,41.32c3.08-0.27,24.22-3.07,33.9-3.62",
+              "M48.6,55.14c10.02-1.39,17.77-2.39,29.73-3.38",
+              "M54.16,63.75c0.31,0.7,0.38,2.1-0.05,3.19C51,75,42.25,88.75,25,97.25",
+              "M64.99,56.37c1.01,1.01,1.33,2.59,1.38,4.43c0.2,8.19-0.3,17.64-0.3,23.2c0,10.75,1.69,12.53,16.23,12.53c12.58,0,14-2.65,14-9.87",
+              "M79.54,63.22c0.46,1.03,0.24,2.17-0.06,2.81c-2.35,4.97-4.05,8.21-6.85,12.08c-0.89,1.23-0.35,2.65,0.91,2.23c4.38-1.46,8.78-2.95,13.03-4.48",
+              "M85,71c1.51,1.53,4.82,7.59,5.19,9.97"
+            ],
+            "svgViewBox": "0 0 109 109",
+            "svgGlyphId": "kanjivg:0584a",
+            "svgSource": "鬼",
+            "svgSourceRequested": "鬼",
+            "svgProvider": "kanjivg",
+            "svgPositionMatched": "right"
+          }
+        }
+      },
+      "rightSvg": {
+        "viewBox": "0 0 120 120",
+        "radicais": {
+          "云": {
+            "position": "left",
+            "svgPaths": [
+              "M11.73,28.98c1.38,0.62,3.66,0.73,5.15,0.57c4.27-0.45,10.92-1.41,14.89-1.89c1.56-0.19,3.23-0.29,4.55-0.13",
+              "M9.95,47.35c1.66,0.74,4.13,0.52,5.81,0.24c6.71-1.12,14.45-2.88,20.6-3.5c1.73-0.18,3.73-0.29,5.43,0.17",
+              "M24.93,49.5c0.2,0.9,0.12,2.37-0.41,3.41c-4.02,7.84-7.83,15.36-12.43,22.84c-1.25,2.03-0.21,3.38,1.62,2.56c8.79-3.94,14.04-6.31,22.56-10",
+              "M32.05,60.64c3.47,2.76,8.49,11.29,9.35,15.58"
+            ],
+            "svgViewBox": "0 0 109 109",
+            "svgGlyphId": "kanjivg:09b42",
+            "svgSource": "云",
+            "svgSourceRequested": "云",
+            "svgProvider": "kanjivg",
+            "svgPositionMatched": "left"
+          },
+          "鬼": {
+            "position": "right",
+            "svgPaths": [
+              "M67.19,12.25c0.09,1.03-0.02,1.68-0.47,2.61c-2.13,4.32-4.74,7.82-9.15,12.6",
+              "M46.5,29.62c0.94,0.94,1.12,1.88,1.35,3.26c0.75,4.57,1.86,14.79,2.61,20.75c0.29,2.34,0.49,4.02,0.53,4.44",
+              "M48.42,31.2c10.83-1.95,24.46-3.45,34.7-4.29c4.75-0.39,7.09,0.27,6.33,5.47c-0.67,4.6-1.52,11.44-3.2,18.5c-0.33,1.4-0.69,2.83-1.07,4.26",
+              "M66.66,30.8c0.83,0.83,1.06,1.95,1.06,3.45c0,4.85-0.09,12.62-0.09,19",
+              "M50.31,43.32c11.44-1.44,27.32-3.07,36.96-3.62",
+              "M51.79,55.89c12.96-1.77,22.46-2.64,33.24-3.38",
+              "M60.55,58.5c0.46,1.41,0.13,2.97-0.34,4.32C57.12,71.79,49.43,87.73,36.5,97",
+              "M69.16,56.37c1.05,1.05,1.47,2.25,1.47,3.93c0,8.45-0.04,13.58-0.04,25.11c0,9.35,2.17,11.3,13.4,11.3c11.02,0,12.52-1.08,12.52-8.94",
+              "M84.24,61.47c0.38,0.78,0.38,1.9-0.07,2.84c-2.2,4.56-4.12,7.71-7.17,12.48c-0.97,1.51,0.08,3.03,1.45,2.51c5.43-2.05,7.18-2.55,12.43-4.44",
+              "M89.52,70.43c1.29,1.31,4.11,6.5,4.43,8.54"
+            ],
+            "svgViewBox": "0 0 109 109",
+            "svgGlyphId": "kanjivg:09b42",
+            "svgSource": "鬼",
+            "svgSourceRequested": "鬼",
+            "svgProvider": "kanjivg",
+            "svgPositionMatched": "right"
+          }
+        }
+      },
+      "valid": true
     }
   }
 }

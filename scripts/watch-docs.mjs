@@ -6,12 +6,15 @@ const rootDir = process.cwd();
 const buildScript = path.join(rootDir, "scripts", "build-docs.mjs");
 const watchDirs = ["data", "templates", "scripts", "assets"];
 const ignoredPaths = new Set([
-  "data/embeds-manifest.json"
+  "data/embeds-manifest.json",
+  "data/radical-svg-cache.json",
+  "data/kanjivg-cache.json"
 ]);
 
 let timer = null;
 let running = false;
 let pending = false;
+let suppressEventsUntil = 0;
 
 function runBuild() {
   if (running) {
@@ -20,13 +23,20 @@ function runBuild() {
   }
 
   running = true;
+  suppressEventsUntil = Date.now() + 800;
   const child = spawn(process.execPath, [buildScript], {
     cwd: rootDir,
-    stdio: "inherit"
+    stdio: "inherit",
+    env: {
+      ...process.env,
+      BUILD_DOCS_WATCH: "1",
+      BUILD_DOCS_SKIP_DECKS: "1"
+    }
   });
 
   child.on("exit", () => {
     running = false;
+    suppressEventsUntil = Date.now() + 300;
     if (pending) {
       pending = false;
       runBuild();
@@ -49,6 +59,10 @@ function toRelativeNormalized(targetDir, filename) {
 for (const dir of watchDirs) {
   const target = path.join(rootDir, dir);
   watch(target, { recursive: true }, (_eventType, filename) => {
+    if (Date.now() < suppressEventsUntil) {
+      return;
+    }
+
     if (filename) {
       const relPath = toRelativeNormalized(target, filename.toString());
       if (ignoredPaths.has(relPath)) {
