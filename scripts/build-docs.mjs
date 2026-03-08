@@ -680,7 +680,12 @@ function toRuby(text) {
 }
 
 function extractKanaFromAnnotated(text) {
-  return String(text).replace(/(.)[（(](.*?)[）)]/gu, "$2");
+  const raw = String(text);
+  const whole = raw.match(/^([^()（）]+)[（(]([^）)]+)[）)]$/u);
+  if (whole) {
+    return whole[2];
+  }
+  return raw.replace(/(.)[（(](.*?)[）)]/gu, "$2");
 }
 
 function extractKanaFromRuby(text) {
@@ -938,11 +943,7 @@ function normalizeRadicalDict(rawRadicals, radicalCatalog) {
 
 function buildVerbeteRadicalConfig(rawVerbeteRadicals, svgDef, radicalCatalog) {
   const explicit = normalizeRadicalDict(rawVerbeteRadicals, radicalCatalog);
-  if (Object.keys(explicit).length > 0) {
-    return explicit;
-  }
-
-  const fallback = {};
+  const merged = {};
   const svgRadicals = (svgDef?.radicais && typeof svgDef.radicais === "object" && !Array.isArray(svgDef.radicais))
     ? svgDef.radicais
     : {};
@@ -952,10 +953,18 @@ function buildVerbeteRadicalConfig(rawVerbeteRadicals, svgDef, radicalCatalog) {
       continue;
     }
     const meaning = String(radicalCatalog?.[radicalId]?.significado ?? "").trim();
-    fallback[radicalId] = meaning ? { significado: meaning } : {};
+    merged[radicalId] = meaning ? { significado: meaning } : {};
   }
 
-  return fallback;
+  for (const [radicalId, cfg] of Object.entries(explicit)) {
+    const base = merged[radicalId] && typeof merged[radicalId] === "object" ? merged[radicalId] : {};
+    merged[radicalId] = {
+      ...base,
+      ...(cfg && typeof cfg === "object" ? cfg : {})
+    };
+  }
+
+  return merged;
 }
 
 function parseKanjiPairId(rawPairId) {

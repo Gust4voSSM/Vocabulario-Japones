@@ -13,6 +13,14 @@
       "portuguese": "chão"
     },
     {
+      "japanese": "心(こころ)",
+      "portuguese": "coração"
+    },
+    {
+      "japanese": "鬼(おに)",
+      "portuguese": "demônio"
+    },
+    {
       "japanese": "欲(ほ)しい",
       "portuguese": "quero"
     },
@@ -40,12 +48,22 @@
     {
       "japanese": "悪(あく)",
       "portuguese": "mau"
+    },
+    {
+      "japanese": "悪(あく)魔(ま)",
+      "portuguese": "diabo, demônio"
+    },
+    {
+      "japanese": "魔(ま)王(おう)",
+      "portuguese": "rei demônio"
     }
+
   ],
   "glossaries": {
-    "cap1-basic-1": ["人", "口", "土", "欲しい"],
-    "cap1-basic-2": ["入り口", "人間", "入間くん"],
-    "cap1-katamari-damacy": ["塊", "魂"]
+    "cap1-basic-1": ["人", "口", "土", "心", "鬼"],
+    "cap1-basic-2": ["入り口", "人間", "入間くん", "欲しい", "悪"],
+    "cap1-katamari-damacy": ["塊", "魂"],
+    "cap1-demons": ["悪魔", "魔王"]
   },
   "kanjiCatalog": {
     "人": {
@@ -78,6 +96,18 @@
         },
         "心": {
           "position": "bottom"
+        }
+      }
+    },
+    "魔": {
+      "significado": "demônio",
+      "onyomi": ["ま"],
+      "radicais": {
+        "麻": {
+          "position": "tare"
+        },
+        "鬼": {
+          "position": "tarec"
         }
       }
     },
@@ -118,12 +148,17 @@
     }
   },
   "kanjiSets": {
-    "cap1-main": ["人", "入", "学", "生", "校", "欲", "悪", "魂", "口", "間"]
+    "cap1-main": ["人", "入", "学", "生", "校", "欲", "悪", "魂", "塊", "口", "間"]
   },
   "verbete_kanji": {
     "悪": {
       "心": {
         "colorCode": "pink-500"
+      }
+    },
+    "魔": {
+      "鬼": {
+        "colorCode": "red-500"
       }
     }
   },
@@ -152,13 +187,16 @@
       "significado": "coração"
     },
     "鬼": {
-      "significado": "oni"
+      "significado": "demônio"
     },
     "土": {
       "significado": "chão"
     },
     "云": {
       "significado": "nuvem"
+    },
+    "麻": {
+      "significado": "linho"
     }
   }
 }

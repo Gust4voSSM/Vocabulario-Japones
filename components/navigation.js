@@ -7,6 +7,42 @@ function extractKanjiIdFromHref(href) {
   return params.get("id") || "";
 }
 
+function getReturnStack() {
+  if (!Array.isArray(window.__kanjiNavReturnStack)) {
+    window.__kanjiNavReturnStack = [];
+  }
+  return window.__kanjiNavReturnStack;
+}
+
+function pushReturnPoint() {
+  var stack = getReturnStack();
+  stack.push({
+    hash: window.location.hash || "",
+    scrollY: Number(window.scrollY || window.pageYOffset || 0),
+  });
+}
+
+function tryRestoreReturnPoint(currentHash) {
+  var stack = getReturnStack();
+  if (stack.length === 0) {
+    return false;
+  }
+
+  var top = stack[stack.length - 1];
+  if (!top || String(top.hash || "") !== String(currentHash || "")) {
+    return false;
+  }
+
+  stack.pop();
+  var targetY = Number(top.scrollY);
+  if (!Number.isFinite(targetY)) {
+    return false;
+  }
+
+  window.scrollTo({ top: Math.max(0, Math.round(targetY)), behavior: "smooth" });
+  return true;
+}
+
 function scrollToKanjiHeading(kanjiId) {
   if (!kanjiId) {
     return false;
@@ -65,6 +101,7 @@ export function bindKanjiReferenceNavigation() {
     event.preventDefault();
 
     if (window.location.hash !== href) {
+      pushReturnPoint();
       window.location.hash = href;
       scrollToKanjiWithRetry(kanjiId, 12);
       return;
@@ -73,6 +110,9 @@ export function bindKanjiReferenceNavigation() {
   });
 
   window.addEventListener("hashchange", function () {
+    if (tryRestoreReturnPoint(window.location.hash || "")) {
+      return;
+    }
     var kanjiId = extractKanjiIdFromHref(window.location.hash || "");
     if (!kanjiId) {
       return;

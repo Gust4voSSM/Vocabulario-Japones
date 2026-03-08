@@ -33,6 +33,12 @@
   margin-bottom: 0;
 }
 
+.markdown-section img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .markdown-section .vocab-table-widget {
   display: block;
   width: 100%;
