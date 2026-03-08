@@ -5,6 +5,9 @@ import path from "node:path";
 const rootDir = process.cwd();
 const buildScript = path.join(rootDir, "scripts", "build-docs.mjs");
 const watchDirs = ["data", "templates", "scripts", "assets"];
+const ignoredPaths = new Set([
+  "data/embeds-manifest.json"
+]);
 
 let timer = null;
 let running = false;
@@ -36,9 +39,22 @@ function queueBuild() {
   timer = setTimeout(runBuild, 120);
 }
 
+function toRelativeNormalized(targetDir, filename) {
+  return path
+    .relative(rootDir, path.join(targetDir, filename))
+    .split(path.sep)
+    .join("/");
+}
+
 for (const dir of watchDirs) {
   const target = path.join(rootDir, dir);
-  watch(target, { recursive: true }, () => {
+  watch(target, { recursive: true }, (_eventType, filename) => {
+    if (filename) {
+      const relPath = toRelativeNormalized(target, filename.toString());
+      if (ignoredPaths.has(relPath)) {
+        return;
+      }
+    }
     queueBuild();
   });
 }

@@ -1,0 +1,55 @@
+{
+  "embeds": {
+    "embed-iruma-cap1-cap1-basic-1-cap1-basic-2": {
+      "id": "embed-iruma-cap1-cap1-basic-1-cap1-basic-2",
+      "cardsB64": "W3siZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3kurpcIj7kuro8L2E+PHJ0PuOBsuOBqDwvcnQ+PC9ydWJ5PiIsInJvbWFqaSI6ImhpdG8iLCJtZWFuaW5nIjoicGVzc29hIiwiamFwb25lcyI6IuS6uijjgbLjgagpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoicGVzc29hIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWPo1wiPuWPozwvYT48cnQ+44GP44GhPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoia3VjaGkiLCJtZWFuaW5nIjoiYm9jYSIsImphcG9uZXMiOiLlj6Mo44GP44GhKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6ImJvY2EifSx7ImZ1cmlnYW5hIjoiPHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ95qyyXCI+5qyyPC9hPjxydD7jgbs8L3J0PjwvcnVieT7jgZfjgYQiLCJyb21hamkiOiJob3NoaWkiLCJtZWFuaW5nIjoicXVlcm8iLCJqYXBvbmVzIjoi5qyyKOOBuynjgZfjgYQiLCJyb21hamlSYXciOiIiLCJwb3J0dWd1ZXMiOiJxdWVybyJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3lhaVcIj7lhaU8L2E+PHJ0PuOBhDwvcnQ+PC9ydWJ5PuOCijxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWPo1wiPuWPozwvYT48cnQ+44GQ44GhPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoiaXJpZ3VjaGkiLCJtZWFuaW5nIjoiZW50cmFkYSIsImphcG9uZXMiOiLlhaUo44GEKeOCiuWPoyjjgZDjgaEpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoiZW50cmFkYSJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3kurpcIj7kuro8L2E+PHJ0PuOBq+OCkzwvcnQ+PC9ydWJ5PjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPemWk1wiPumWkzwvYT48cnQ+44GS44KTPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoibmluZ2VuIiwibWVhbmluZyI6Imh1bWFubyIsImphcG9uZXMiOiLkuroo44Gr44KTKemWkyjjgZLjgpMpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoiaHVtYW5vIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWFpVwiPuWFpTwvYT48cnQ+44GE44KLPC9ydD48L3J1Ynk+PHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ96ZaTXCI+6ZaTPC9hPjxydD7jgb48L3J0PjwvcnVieT7jgY/jgpMiLCJyb21hamkiOiJJcnVtYS1rdW4iLCJtZWFuaW5nIjoiSXJ1bWEiLCJqYXBvbmVzIjoi5YWlKOOBhOOCiynplpMo44G+KeOBj+OCkyIsInJvbWFqaVJhdyI6IklydW1hLWt1biIsInBvcnR1Z3VlcyI6IklydW1hIn1d",
+      "globalDeckHref": "decks/iruma-cap1.apkg",
+      "localDeckHref": "decks/iruma-cap1__cap1-basic-1-cap1-basic-2.apkg",
+      "firstPassNoShuffle": true
+    },
+    "embed-iruma-cap1-cap1-katamari-damacy-cap1-basic-1-cap1-basic-2": {
+      "id": "embed-iruma-cap1-cap1-katamari-damacy-cap1-basic-1-cap1-basic-2",
+      "cardsB64": "W3siZnVyaWdhbmEiOiI8cnVieT7loYo8cnQ+44GL44Gf44G+44KKPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoia2F0YW1hcmkiLCJtZWFuaW5nIjoiYW1vbnRvYWRvLCBhbWFsZ2FtYSIsImphcG9uZXMiOiLloYoo44GL44Gf44G+44KKKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6ImFtb250b2FkbywgYW1hbGdhbWEifSx7ImZ1cmlnYW5hIjoiPHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ96a2CXCI+6a2CPC9hPjxydD7jgZ/jgb7jgZfjgYQ8L3J0PjwvcnVieT4iLCJyb21hamkiOiJ0YW1hc2hpaSIsIm1lYW5pbmciOiJhbG1hIiwiamFwb25lcyI6IumtgijjgZ/jgb7jgZfjgYQpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoiYWxtYSJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3kurpcIj7kuro8L2E+PHJ0PuOBsuOBqDwvcnQ+PC9ydWJ5PiIsInJvbWFqaSI6ImhpdG8iLCJtZWFuaW5nIjoicGVzc29hIiwiamFwb25lcyI6IuS6uijjgbLjgagpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoicGVzc29hIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWPo1wiPuWPozwvYT48cnQ+44GP44GhPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoia3VjaGkiLCJtZWFuaW5nIjoiYm9jYSIsImphcG9uZXMiOiLlj6Mo44GP44GhKSIsInJvbWFqaVJhdyI6IiIsInBvcnR1Z3VlcyI6ImJvY2EifSx7ImZ1cmlnYW5hIjoiPHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ95qyyXCI+5qyyPC9hPjxydD7jgbs8L3J0PjwvcnVieT7jgZfjgYQiLCJyb21hamkiOiJob3NoaWkiLCJtZWFuaW5nIjoicXVlcm8iLCJqYXBvbmVzIjoi5qyyKOOBuynjgZfjgYQiLCJyb21hamlSYXciOiIiLCJwb3J0dWd1ZXMiOiJxdWVybyJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3lhaVcIj7lhaU8L2E+PHJ0PuOBhDwvcnQ+PC9ydWJ5PuOCijxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWPo1wiPuWPozwvYT48cnQ+44GQ44GhPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoiaXJpZ3VjaGkiLCJtZWFuaW5nIjoiZW50cmFkYSIsImphcG9uZXMiOiLlhaUo44GEKeOCiuWPoyjjgZDjgaEpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoiZW50cmFkYSJ9LHsiZnVyaWdhbmEiOiI8cnVieT48YSBjbGFzcz1cImthbmppLXJlZlwiIGhyZWY9XCIjLz9pZD3kurpcIj7kuro8L2E+PHJ0PuOBq+OCkzwvcnQ+PC9ydWJ5PjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPemWk1wiPumWkzwvYT48cnQ+44GS44KTPC9ydD48L3J1Ynk+Iiwicm9tYWppIjoibmluZ2VuIiwibWVhbmluZyI6Imh1bWFubyIsImphcG9uZXMiOiLkuroo44Gr44KTKemWkyjjgZLjgpMpIiwicm9tYWppUmF3IjoiIiwicG9ydHVndWVzIjoiaHVtYW5vIn0seyJmdXJpZ2FuYSI6IjxydWJ5PjxhIGNsYXNzPVwia2FuamktcmVmXCIgaHJlZj1cIiMvP2lkPeWFpVwiPuWFpTwvYT48cnQ+44GE44KLPC9ydD48L3J1Ynk+PHJ1Ynk+PGEgY2xhc3M9XCJrYW5qaS1yZWZcIiBocmVmPVwiIy8/aWQ96ZaTXCI+6ZaTPC9hPjxydD7jgb48L3J0PjwvcnVieT7jgY/jgpMiLCJyb21hamkiOiJJcnVtYS1rdW4iLCJtZWFuaW5nIjoiSXJ1bWEiLCJqYXBvbmVzIjoi5YWlKOOBhOOCiynplpMo44G+KeOBj+OCkyIsInJvbWFqaVJhdyI6IklydW1hLWt1biIsInBvcnR1Z3VlcyI6IklydW1hIn1d",
+      "globalDeckHref": "decks/iruma-cap1.apkg",
+      "localDeckHref": "decks/iruma-cap1__cap1-katamari-damacy-cap1-basic-1-cap1-basic-2.apkg",
+      "firstPassNoShuffle": true
+    }
+  },
+  "tables": {
+    "vocab-cap1-basic-1-cap1-basic-2": {
+      "id": "vocab-cap1-basic-1-cap1-basic-2",
+      "rows": [
+        {
+          "japanese": "<ruby><a class=\"kanji-ref\" href=\"#/?id=人\">人</a><rt>ひと</rt></ruby>",
+          "romaji": "hito",
+          "portuguese": "pessoa"
+        },
+        {
+          "japanese": "<ruby><a class=\"kanji-ref\" href=\"#/?id=口\">口</a><rt>くち</rt></ruby>",
+          "romaji": "kuchi",
+          "portuguese": "boca"
+        },
+        {
+          "japanese": "<ruby><a class=\"kanji-ref\" href=\"#/?id=欲\">欲</a><rt>ほ</rt></ruby>しい",
+          "romaji": "hoshii",
+          "portuguese": "quero"
+        },
+        {
+          "japanese": "<ruby><a class=\"kanji-ref\" href=\"#/?id=入\">入</a><rt>い</rt></ruby>り<ruby><a class=\"kanji-ref\" href=\"#/?id=口\">口</a><rt>ぐち</rt></ruby>",
+          "romaji": "iriguchi",
+          "portuguese": "entrada"
+        },
+        {
+          "japanese": "<ruby><a class=\"kanji-ref\" href=\"#/?id=人\">人</a><rt>にん</rt></ruby><ruby><a class=\"kanji-ref\" href=\"#/?id=間\">間</a><rt>げん</rt></ruby>",
+          "romaji": "ningen",
+          "portuguese": "humano"
+        },
+        {
+          "japanese": "<ruby><a class=\"kanji-ref\" href=\"#/?id=入\">入</a><rt>いる</rt></ruby><ruby><a class=\"kanji-ref\" href=\"#/?id=間\">間</a><rt>ま</rt></ruby>くん",
+          "romaji": "Iruma-kun",
+          "portuguese": "Iruma"
+        }
+      ]
+    }
+  }
+}

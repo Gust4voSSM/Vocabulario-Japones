@@ -8,6 +8,7 @@ const rootDir = process.cwd();
 const dataPath = path.join(rootDir, "data", "readme.json");
 const templatePath = path.join(rootDir, "templates", "readme.hbs");
 const outputPath = path.join(rootDir, "README.md");
+const embedsManifestPath = path.join(rootDir, "data", "embeds-manifest.json");
 const decksDir = path.join(rootDir, "decks");
 const deckBuildDir = path.join(decksDir, ".build");
 
@@ -82,6 +83,96 @@ const MACRONS = { a: "ā", i: "ī", u: "ū", e: "ē", o: "ō" };
 
 function splitIds(csv) {
   return String(csv ?? "").split(",").map((item) => item.trim()).filter(Boolean);
+}
+
+function getKanjiPatterns(kanjiCatalog) {
+  return Object.keys(kanjiCatalog ?? {})
+    .filter(Boolean)
+    .sort((a, b) => b.length - a.length);
+}
+
+function buildKanjiHref(kanjiId) {
+  return `#/?id=${kanjiId}`;
+}
+
+function linkKanjiInText(text, kanjiPatterns) {
+  if (!text || kanjiPatterns.length === 0) {
+    return text;
+  }
+
+  let out = "";
+  let i = 0;
+  while (i < text.length) {
+    let matched = null;
+    for (const pattern of kanjiPatterns) {
+      if (text.startsWith(pattern, i)) {
+        matched = pattern;
+        break;
+      }
+    }
+
+    if (matched) {
+      out += `<a class="kanji-ref" href="${buildKanjiHref(matched)}">${matched}</a>`;
+      i += matched.length;
+      continue;
+    }
+
+    out += text[i];
+    i += 1;
+  }
+  return out;
+}
+
+function linkKanjiInHtml(html, kanjiPatterns) {
+  if (!html || kanjiPatterns.length === 0) {
+    return html;
+  }
+
+  const parts = String(html).split(/(<[^>]+>)/g);
+  let inAnchor = 0;
+  let inRt = 0;
+  let out = "";
+
+  for (const part of parts) {
+    if (!part) {
+      continue;
+    }
+
+    if (part.startsWith("<")) {
+      const tagMatch = part.match(/^<\s*(\/?)\s*([a-z0-9:-]+)/i);
+      const isClosing = Boolean(tagMatch?.[1]);
+      const tagName = (tagMatch?.[2] ?? "").toLowerCase();
+      const isSelfClosing = /\/\s*>$/.test(part);
+
+      if (tagName === "a" && !isSelfClosing) {
+        if (isClosing) {
+          inAnchor = Math.max(0, inAnchor - 1);
+        } else {
+          inAnchor += 1;
+        }
+      }
+
+      if (tagName === "rt" && !isSelfClosing) {
+        if (isClosing) {
+          inRt = Math.max(0, inRt - 1);
+        } else {
+          inRt += 1;
+        }
+      }
+
+      out += part;
+      continue;
+    }
+
+    if (inAnchor > 0 || inRt > 0) {
+      out += part;
+      continue;
+    }
+
+    out += linkKanjiInText(part, kanjiPatterns);
+  }
+
+  return out;
 }
 
 function slugFromIds(ids) {
@@ -241,17 +332,23 @@ function resolveGlossary(glossaryIdsCsv, glossaries, vocabIndex) {
   return { glossaryIds, entries: out };
 }
 
-function renderVocabularyTable(entries) {
-  const lines = [
-    "| Japonês | Romaji | Português |",
-    "| :--- | :--- | :--- |"
-  ];
+function buildVocabularyRows(entries, kanjiPatterns) {
+  return entries.map((entry) => ({
+    japanese: linkKanjiInHtml(entry.japaneseDisplay, kanjiPatterns),
+    romaji: entry.romajiDisplay,
+    portuguese: entry.portuguese
+  }));
+}
 
-  for (const entry of entries) {
-    lines.push(`| ${entry.japaneseDisplay} | *${entry.romajiDisplay}* | ${entry.portuguese} |`);
-  }
-
-  return lines.join("\n");
+function renderVocabularyComponent(entries, config) {
+  const id = `vocab-${config.slotSuffix}`;
+  return {
+    html: `[[vocab-table:${id}]]`,
+    slot: {
+      id,
+      rows: buildVocabularyRows(entries, config.kanjiPatterns)
+    }
+  };
 }
 
 function renderReadings(kunyomi, onyomi) {
@@ -316,9 +413,9 @@ function renderKanjiSet(setIdsCsv, kanjiSets, kanjiCatalog) {
   return lines.join("\n");
 }
 
-function encodeCards(entries) {
+function encodeCards(entries, kanjiPatterns) {
   const cards = entries.map((entry) => ({
-    furigana: entry.japaneseDisplay,
+    furigana: linkKanjiInHtml(entry.japaneseDisplay, kanjiPatterns),
     romaji: entry.romajiDisplay,
     meaning: entry.portuguese,
     japones: entry.japaneseRaw,
@@ -340,36 +437,28 @@ function cardsForDeck(entries) {
 
 function renderEmbed(entries, config) {
   const id = `embed-${config.localSlug}`;
-  const dataB64 = encodeCards(entries);
+  const dataB64 = encodeCards(entries, config.kanjiPatterns);
   const globalDeckHref = `decks/${config.globalFile}`;
   const localDeckHref = `decks/${config.localFile}`;
   const firstPassNoShuffleAttr = config.firstPassNoShuffle ? " data-first-pass-no-shuffle=\"1\"" : "";
-  const shuffleDisabledAttr = config.firstPassNoShuffle ? " disabled" : "";
 
-  const html = [
-    "<div class=\"anki-embed-group\">",
-    `  <div class=\"anki-embed\" id=\"${id}\" data-cards-b64=\"${dataB64}\"${firstPassNoShuffleAttr}>`,
-    "    <div class=\"anki-card\" data-face=\"front\"></div>",
-    "    <div class=\"anki-controls\">",
-    "      <button type=\"button\" class=\"icon-only\" data-action=\"prev\" title=\"Anterior\" aria-label=\"Anterior\"><i class=\"fa-solid fa-chevron-left\" aria-hidden=\"true\"></i></button>",
-    "      <button type=\"button\" class=\"icon-only flip-toggle\" data-action=\"flip\" title=\"Virar\" aria-label=\"Virar\"><i class=\"fa-regular fa-eye\" aria-hidden=\"true\"></i><i class=\"fa-solid fa-eye\" aria-hidden=\"true\"></i></button>",
-    "      <button type=\"button\" class=\"icon-only\" data-action=\"next\" title=\"Próxima\" aria-label=\"Próxima\"><i class=\"fa-solid fa-chevron-right\" aria-hidden=\"true\"></i></button>",
-    `      <button type="button" class="icon-only" data-action="shuffle" title="Embaralhar" aria-label="Embaralhar"${shuffleDisabledAttr}><i class="fa-solid fa-shuffle" aria-hidden="true"></i></button>`,
-    "    </div>",
-    "  </div>",
-    "  <div class=\"anki-export-controls\">",
-    `    <a href=\"${globalDeckHref}\" class=\"deck-download deck-primary\" download>Adicionar ao deck</a>`,
-    `    <a href=\"${localDeckHref}\" class=\"deck-download deck-secondary\" download>Exportar só este bloco</a>`,
-    "  </div>",
-    "</div>"
-  ];
-
-  return { html: html.join("\n"), cards: cardsForDeck(entries) };
+  const html = `[[anki-embed:${id}]]`;
+  return {
+    html,
+    cards: cardsForDeck(entries),
+    slot: {
+      id,
+      cardsB64: dataB64,
+      globalDeckHref,
+      localDeckHref,
+      firstPassNoShuffle: Boolean(firstPassNoShuffleAttr)
+    }
+  };
 }
 
 function parseEmbedRequests(templateRaw) {
   const requests = [];
-  const regex = /{{{\s*Embed\s+"([^"]+)"\s+"([^"]+)"\s*}}}/g;
+  const regex = /{{{\s*Embed\s+"([^"]+)"\s+"([^"]+)"/g;
   let match = regex.exec(templateRaw);
   while (match) {
     requests.push({ deckId: match[1], glossaries: match[2] });
@@ -439,10 +528,15 @@ async function exportDecks(pythonPath, deckPayloads) {
   }
 }
 
-function registerHelpers(data, deckPayloads) {
+function registerHelpers(data, deckPayloads, embedSlots, tableSlots) {
+  const kanjiPatterns = getKanjiPatterns(data.kanjiCatalog);
+
   Handlebars.registerHelper("Vocab", (glossaryIdsCsv) => {
-    const { entries } = resolveGlossary(glossaryIdsCsv, data.glossaries, data.vocabIndex);
-    return new Handlebars.SafeString(renderVocabularyTable(entries));
+    const { glossaryIds, entries } = resolveGlossary(glossaryIdsCsv, data.glossaries, data.vocabIndex);
+    const slotSuffix = slugFromIds(glossaryIds);
+    const rendered = renderVocabularyComponent(entries, { slotSuffix, kanjiPatterns });
+    tableSlots.set(rendered.slot.id, rendered.slot);
+    return new Handlebars.SafeString(rendered.html);
   });
 
   Handlebars.registerHelper("Embed", (deckId, glossaryIdsCsv, maybeFlag, maybeOptions) => {
@@ -467,7 +561,8 @@ function registerHelpers(data, deckPayloads) {
     const localSlug = `${deckKey}-${localSuffix}`;
     const localFile = `${deckKey}__${localSuffix}.apkg`;
     const globalFile = `${deckKey}.apkg`;
-    const rendered = renderEmbed(entries, { localSlug, localFile, globalFile, firstPassNoShuffle });
+    const rendered = renderEmbed(entries, { localSlug, localFile, globalFile, firstPassNoShuffle, kanjiPatterns });
+    embedSlots.set(rendered.slot.id, rendered.slot);
 
     if (!deckPayloads.local.has(localFile)) {
       deckPayloads.local.set(localFile, {
@@ -516,12 +611,18 @@ const normalized = {
 const embedRequests = parseEmbedRequests(templateSource);
 const pythonPath = ensurePythonReady(embedRequests.length);
 const decksToBuild = { local: new Map(), global: new Map() };
-registerHelpers(normalized, decksToBuild);
+const embedSlots = new Map();
+const tableSlots = new Map();
+registerHelpers(normalized, decksToBuild, embedSlots, tableSlots);
 
 const template = Handlebars.compile(templateSource, { noEscape: true });
 const rendered = template(normalized).trimEnd() + "\n";
 
 await writeFile(outputPath, rendered, "utf8");
+await writeFile(embedsManifestPath, JSON.stringify({
+  embeds: Object.fromEntries(embedSlots),
+  tables: Object.fromEntries(tableSlots)
+}, null, 2) + "\n", "utf8");
 await exportDecks(pythonPath, decksToBuild);
 
 console.log(`README generated from ${path.relative(rootDir, dataPath)} using ${path.relative(rootDir, templatePath)}.`);
