@@ -6,7 +6,7 @@ Esse repositório compila vocabulário útil para leitura de mangá.
 ---
 
 # Mairimashita! Iruma-kun
-
+    
 Mairimashita! Iruma-kun é um mangá escrito por Osamu Nishi e publicado pela Shounen Champion Comics.
 
 ![Iruma-kun](https://upload.wikimedia.org/wikipedia/en/9/99/Mairimashita%21_Iruma-kun_volume_1_cover.jpg)
@@ -14,6 +14,10 @@ Mairimashita! Iruma-kun é um mangá escrito por Osamu Nishi e publicado pela Sh
 *imagem: wikipedia*
 
 ## Capítulo 1
+
+[[kanji-verbete:verbete-6b32]]
+
+O mangá começa falando sobre os desejos e a ganância dos seres humanos. As primeiras páginas são repletas de palavras relacionadas a esses temas, usando o kanji **欲**.
 
 ### Humano
 

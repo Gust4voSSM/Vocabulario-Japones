@@ -21,6 +21,10 @@
       "portuguese": "demônio"
     },
     {
+      "japanese": "王(おう)",
+      "portuguese": "rei"
+    },
+    {
       "japanese": "欲(ほ)しい",
       "portuguese": "quero"
     },
@@ -60,7 +64,7 @@
 
   ],
   "glossaries": {
-    "cap1-basic-1": ["人", "口", "土", "心", "鬼"],
+    "cap1-basic-1": ["人", "口", "土", "心", "鬼", "王"],
     "cap1-basic-2": ["入り口", "人間", "入間くん", "欲しい"],
     "cap1-katamari-damacy": ["塊", "魂"],
     "cap1-demons": ["悪", "魔王", "悪魔"]
