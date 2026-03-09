@@ -89,7 +89,9 @@
       "significado": "escola"
     },
     "欲": {
-      "significado": "querer"
+      "significado": "querer",
+      "onyomi": ["よく"],
+      "kunyomi": ["ほ"]
     },
     "悪": {
       "significado": "mau",
