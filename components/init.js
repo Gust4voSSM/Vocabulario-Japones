@@ -9,6 +9,7 @@ import { hydrateVocabTable } from "./vocab-table.js";
 import { hydrateKanjiComparacao, hydrateKanjiVerbete } from "./kanji-widgets.js";
 import { hydrateAnkiEmbed } from "./anki-embed.js";
 import { bindKanjiReferenceNavigation } from "./navigation.js";
+import { initThemeToggle } from "./theme-toggle.js";
 
 export function initAnkiEmbeds() {
   return loadWidgetsManifest().then(function (manifest) {
@@ -33,6 +34,7 @@ export function initAnkiEmbeds() {
 
 window.initAnkiEmbeds = initAnkiEmbeds;
 bindKanjiReferenceNavigation();
+initThemeToggle();
 
 if (document.readyState === "loading") {
   document.addEventListener(

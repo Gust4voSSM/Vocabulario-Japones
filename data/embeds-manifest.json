@@ -116,8 +116,12 @@
       "id": "verbete-6b32",
       "kanjiId": "欲",
       "meaning": "querer",
-      "kunyomi": [],
-      "onyomi": [],
+      "kunyomi": [
+        "ほ"
+      ],
+      "onyomi": [
+        "よく"
+      ],
       "radicals": {
         "欲": {}
       },
